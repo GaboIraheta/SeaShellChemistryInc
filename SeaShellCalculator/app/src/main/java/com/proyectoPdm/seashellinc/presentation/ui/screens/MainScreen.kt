@@ -54,7 +54,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    val navigationBarHeigh = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.navigationBars,
@@ -85,7 +85,7 @@ fun MainScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = navigationBarHeigh)
+                    .padding(bottom = navigationBarHeight)
             ) {
                 Row(
                     modifier = Modifier
@@ -121,7 +121,7 @@ fun MainScreen() {
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(bottom = navigationBarHeigh),
+                .padding(bottom = navigationBarHeight),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

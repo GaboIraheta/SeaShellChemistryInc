@@ -1,8 +1,10 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,12 +22,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -44,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.proyectoPdm.seashellinc.R
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.LogoComponent
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
@@ -55,8 +63,8 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
-    val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+fun RegisterScreen() {
+    val navigationBarHeigh = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.navigationBars,
@@ -74,7 +82,7 @@ fun LoginScreen() {
                 ) {
                     LogoComponent(Modifier.size(60.dp), 1f)
                     Text(
-                        "Iniciar Sesión",
+                        "Crear cuenta",
                         fontFamily = MontserratFontFamily,
                         fontWeight = FontWeight.Bold,
                         style = TextStyle(fontSize = 32.sp),
@@ -87,7 +95,7 @@ fun LoginScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = navigationBarHeight)
+                    .padding(bottom = navigationBarHeigh)
             ) {
                 Row(
                     modifier = Modifier
@@ -123,12 +131,13 @@ fun LoginScreen() {
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(bottom = navigationBarHeight),
+                .padding(bottom = navigationBarHeigh),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             var mailValue by remember { mutableStateOf("") }
             var passwordValue by remember { mutableStateOf("") }
+            var passwordConfirmValue by remember { mutableStateOf("") }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -168,14 +177,27 @@ fun LoginScreen() {
                     true
                 )
             }
+            Spacer(Modifier.height(20.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Lock,
+                    contentDescription = null,
+                    tint = MainBlue,
+                    modifier = Modifier.size(45.dp)
+                )
+                Spacer(Modifier.width(10.dp))
+                AppTextField(
+                    passwordConfirmValue,
+                    onValueChange = { newText -> passwordConfirmValue = newText },
+                    "Confirmar contraseña",
+                    true
+                )
+            }
             Spacer(Modifier.height(5.dp))
-            Text(
-                "¿Olvido la contraseña?",
-                textAlign = TextAlign.End,
-                modifier = Modifier.width(330.dp),
-                color = MainBlue,
-                fontFamily = MontserratFontFamily
-            )
             Spacer(Modifier.height(20.dp))
             Button(
                 onClick = {},
@@ -183,7 +205,7 @@ fun LoginScreen() {
                 modifier = Modifier.border(1.dp, MainBlue, RoundedCornerShape(5.dp)).width(300.dp)
             ) {
                 Text(
-                    "Ingresar",
+                    "Registrarse",
                     fontFamily = MontserratFontFamily,
                     fontWeight = FontWeight.Bold,
                     color = CitrineBrown,

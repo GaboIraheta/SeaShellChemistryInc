@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +42,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 @Preview
 @Composable
 fun PhysicalUnitsScreen() {
-    val navigationBarHeigh = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.navigationBars,
@@ -71,7 +70,7 @@ fun PhysicalUnitsScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = navigationBarHeigh)
+                    .padding(bottom = navigationBarHeight)
             ) {
                 Row(
                     modifier = Modifier
@@ -89,7 +88,7 @@ fun PhysicalUnitsScreen() {
         }
     ) { innerPadding ->
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(innerPadding)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.seashelllogo),
