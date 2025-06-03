@@ -33,11 +33,10 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 fun AppGoBackButton(
     width: Dp,
    onClick: () -> Unit,
-
 ) {
 
     Surface(
-        onClick = {onClick},
+        onClick = {onClick()},
         color = Color.Transparent,
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier.height(48.dp).border(1.dp, Color.Black, RoundedCornerShape(5.dp)).width(width)

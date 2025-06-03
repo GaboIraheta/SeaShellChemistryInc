@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
@@ -39,9 +40,8 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Marigold
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 
-@Preview
 @Composable
-fun PhysicalUnitsScreen() {
+fun PhysicalUnitsScreen(navController: NavController) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -121,16 +121,18 @@ fun PhysicalUnitsScreen() {
 
             Spacer(Modifier.height(100.dp))
 
-            AppButton("Porcentaje referido a la masa", 300.dp)
+            AppButton("Porcentaje referido a la masa", 300.dp){}
             Spacer(Modifier.height(20.dp))
-            AppButton("Porcentaje referido al volumen", 300.dp)
+            AppButton("Porcentaje referido al volumen", 300.dp){}
             Spacer(Modifier.height(20.dp))
-            AppButton("Porcentaje masa-volumen", 300.dp)
+            AppButton("Porcentaje masa-volumen", 300.dp){}
             Spacer(Modifier.height(20.dp))
-            AppButton("Partes por millon", 300.dp)
+            AppButton("Partes por millon", 300.dp){}
             Spacer(Modifier.height(70.dp))
 
-            AppGoBackButton(112.dp, {})//TODO: Agregar la función de regreso
+            AppGoBackButton(112.dp, {
+                navController.popBackStack()
+            })
 
         }
 
