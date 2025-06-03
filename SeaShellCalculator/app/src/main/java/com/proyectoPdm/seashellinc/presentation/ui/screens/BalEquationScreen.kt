@@ -22,15 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
 import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-@Preview
 @Composable
-fun BalEquationScreen() {
+fun BalEquationScreen(navController: NavController) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -44,7 +44,7 @@ fun BalEquationScreen() {
             ) {
                 Row(
                     modifier = Modifier
-                        .width(370.dp)
+                        .fillMaxWidth(0.95f)
                         .height(17.dp)
                         .background(LightDarkBlue)
                 ) { }
@@ -93,7 +93,9 @@ fun BalEquationScreen() {
             Spacer(Modifier.height(20.dp))
             Row {
                 Spacer(Modifier.width(50.dp))
-                AppGoBackButton(60.dp){}
+                AppGoBackButton(60.dp){
+                    navController.popBackStack()
+                }
             }
         }
     }

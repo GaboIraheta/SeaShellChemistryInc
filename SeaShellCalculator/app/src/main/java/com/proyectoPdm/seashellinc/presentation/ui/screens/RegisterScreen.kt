@@ -47,11 +47,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.R
+import com.proyectoPdm.seashellinc.presentation.navigation.RegisterScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.LogoComponent
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
@@ -60,10 +64,9 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navController: NavController) {
     val navigationBarHeigh = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -127,11 +130,20 @@ fun RegisterScreen() {
                 alpha = 0.2f
             )
         }
+        Column(Modifier.padding(innerPadding)) {
+            Spacer(Modifier.height(20.dp))
+            Row(modifier = Modifier.height(70.dp)) {
+                Spacer(Modifier.width(20.dp))
+                AppGoBackButton(80.dp) {
+                    navController.popBackStack()
+                }
+            }
+
+        }
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(bottom = navigationBarHeigh),
+                .padding(innerPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -210,6 +222,22 @@ fun RegisterScreen() {
                     fontWeight = FontWeight.Bold,
                     color = CitrineBrown,
                     fontSize = 20.sp
+                )
+            }
+            Spacer(Modifier.height(50.dp))
+            Row {
+                Text("Ya tienes una cuenta? ", fontFamily = MontserratFontFamily, color = MainBlue)
+                Text(
+                    "Iniciar sesión",
+                    modifier = Modifier.clickable {
+                        navController.popBackStack()
+                    },
+                    fontFamily = MontserratFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    style = TextStyle(
+                        textDecoration = TextDecoration.Underline,
+                    ),
+                    color = MainBlue
                 )
             }
         }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,8 +20,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -41,7 +45,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.R
+import com.proyectoPdm.seashellinc.presentation.navigation.BalEquationScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.ChemicalUnitsScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.LoginScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.PeriodicTableScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.PhysicalUnitsScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.RegisterScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.LogoComponent
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
@@ -50,10 +62,10 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 
-@Preview
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -87,6 +99,7 @@ fun MainScreen() {
                     .fillMaxWidth()
                     .padding(bottom = navigationBarHeight)
             ) {
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -102,8 +115,22 @@ fun MainScreen() {
                 ) {}
             }
         },
+        floatingActionButton = {
+            IconButton(
+                onClick = {},
+                modifier = Modifier.size(50.dp),
+                colors = IconButtonDefaults.iconButtonColors(MainBlue)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = "Ayuda",
+                    tint = Buff,
+                    modifier = Modifier.size(45.dp)
+                )
+            }
+        }
     ) { innerPadding ->
-
+        val scrollState = rememberScrollState()
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -121,10 +148,11 @@ fun MainScreen() {
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(bottom = navigationBarHeight),
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(Modifier.height(10.dp))
             Text(
                 "Bienvenido a SeaShell\nCalculator",
                 fontFamily = MontserratFontFamily,
@@ -133,77 +161,69 @@ fun MainScreen() {
                 style = TextStyle(fontSize = 20.sp)
             )
             Spacer(Modifier.height(60.dp))
-            AppButton("Unidades físicas\nde concentración", 240.dp)
+            AppButton("Unidades físicas\nde concentración", 240.dp) {
+                navController.navigate(PhysicalUnitsScreenSerializable)
+            }
             Spacer(Modifier.height(20.dp))
-            AppButton("Unidades químicas\nde concentración", 240.dp)
+            AppButton("Unidades químicas\nde concentración", 240.dp) {
+                navController.navigate(ChemicalUnitsScreenSerializable)
+            }
             Spacer(Modifier.height(20.dp))
-            AppButton("Lista de masas\nmolares", 240.dp)
+            AppButton("Lista de masas\nmolares", 240.dp) {
+                navController.navigate(MolarMassScreenSerializable)
+            }
             Spacer(Modifier.height(20.dp))
-            AppButton("Balanceador de\necuaciones químicas", 240.dp, true)
+            AppButton("Balanceador de\necuaciones químicas", 240.dp, true) {
+                navController.navigate(BalEquationScreenSerializable)
+            }
             Spacer(Modifier.height(20.dp))
-            AppButton("Tabla Periódica", 240.dp, true)
+            AppButton("Tabla Periódica", 240.dp, true) {
+                navController.navigate(PeriodicTableScreenSerializable)
+            }
             Spacer(Modifier.height(50.dp))
 
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {},
-                    modifier = Modifier
-                        .width(160.dp)
-                        .border(1.dp, MainBlue, RoundedCornerShape(5.dp)),
-                    colors = ButtonDefaults.buttonColors(Color.Transparent)
-                ) {
-                    Text(
-                        "Iniciar Sesión",
-                        fontFamily = MontserratFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        color = CitrineBrown,
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                }
-                Spacer(Modifier.width(20.dp))
-                Button(
-                    onClick = {}, modifier = Modifier
-                        .width(160.dp)
-                        .border(1.dp, MainBlue, RoundedCornerShape(5.dp)),
-                    colors = ButtonDefaults.buttonColors(Color.Transparent)
-                ) {
-                    Text(
-                        "Registrarse",
-                        fontFamily = MontserratFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        color = CitrineBrown,
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                }
-            }
+            //if(userIsLogged){ //TODO: implementar lógica de inicio de sesión
+            //      Row(verticalAlignment = Alignment.CenterVertically) {
+            //                IconButton(
+            //                    onClick = {},
+            //                    modifier = Modifier.size(50.dp),
+            //                    colors = IconButtonDefaults.iconButtonColors(MainBlue)
+            //                ) {
+            //                    Icon(
+            //                        imageVector = Icons.Outlined.AccountCircle,
+            //                        contentDescription = "",
+            //                        tint = Buff,
+            //                        modifier = Modifier.size(45.dp)
+            //                    )
+            //                }
+            //                Spacer(Modifier.width(10.dp))
+            //                Text(
+            //                    "UserName",//TODO: poner email de usuario
+            //                    fontFamily = MontserratFontFamily,
+            //                    fontWeight = FontWeight.Bold,
+            //                    color = CitrineBrown,
+            //                    fontSize = 20.sp
+            //                )
+            //            }
+            // } else {
 
-            Spacer(Modifier.height(60.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(
-                    onClick = {},
-                    modifier = Modifier.size(32.dp), // Tamaño muy pequeño
-                    colors = IconButtonDefaults.iconButtonColors(MainBlue)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info, // Usa Help en lugar de HelpOutline para mejor visibilidad
-                        contentDescription = "Ayuda",
-                        tint = Buff,
-                        modifier = Modifier.size(25.dp) // Tamaño del icono
-                    )
-                }
-                Spacer(Modifier.width(5.dp))
+            Button(
+                onClick = { navController.navigate(LoginScreenSerializable) },
+                modifier = Modifier
+                    .width(170.dp)
+                    .border(1.dp, MainBlue, RoundedCornerShape(5.dp)),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)
+            ) {
                 Text(
-                    "Ayuda",
+                    "Iniciar Sesión",
                     fontFamily = MontserratFontFamily,
                     fontWeight = FontWeight.Bold,
                     color = CitrineBrown,
-                    fontSize = 20.sp,
-                    modifier = Modifier.clickable{}
+                    style = TextStyle(fontSize = 16.sp)
                 )
             }
+
+            //}
         }
     }
 }

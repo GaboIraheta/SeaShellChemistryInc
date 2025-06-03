@@ -25,7 +25,8 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 fun AppButton(
     text: String,
     width: Dp,
-    isPremium: Boolean = false
+    isPremium: Boolean = false,
+    onClick: () -> Unit
 ) {
     var modifier: Modifier = if (isPremium) {
         Modifier
@@ -36,7 +37,7 @@ fun AppButton(
     }
 
     Button(
-        onClick = {},
+        onClick = {onClick()},
         colors = ButtonDefaults.buttonColors(MainBlue),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier
