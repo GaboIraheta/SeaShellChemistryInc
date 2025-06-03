@@ -174,11 +174,11 @@ fun MainScreen(navController: NavController) {
             }
             Spacer(Modifier.height(20.dp))
             AppButton("Balanceador de\necuaciones químicas", 240.dp, true) {
-                navController.navigate(BalEquationScreenSerializable)
+                /*if (user.IsPremium) */navController.navigate(BalEquationScreenSerializable) /*else navController.navigate(BuyPremiumScreenSerializable)*/
             }
             Spacer(Modifier.height(20.dp))
             AppButton("Tabla Periódica", 240.dp, true) {
-                navController.navigate(PeriodicTableScreenSerializable)
+                /*if (user.IsPremium) */ navController.navigate(PeriodicTableScreenSerializable) /*else navController.navigate(BuyPremiumScreenSerializable)*/
             }
             Spacer(Modifier.height(50.dp))
 
