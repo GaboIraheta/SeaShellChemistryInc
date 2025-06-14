@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.proyectoPdm.seashellinc.presentation.ui.screens.BalEquationScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.ChemicalUnitsScreen
+import com.proyectoPdm.seashellinc.presentation.ui.screens.compounds.CompoundScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.LoadingScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.LoginScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.MainScreen
@@ -59,6 +61,11 @@ fun Navigation() {
 
         composable<RegisterScreenSerializable> {
             RegisterScreen(navController)
+        }
+
+        composable<CompoundScreenSerializable>{ compoundName ->
+            val args = compoundName.toRoute<CompoundScreenSerializable>()
+            CompoundScreen(navController, compoundName = args.compoundName)
         }
     }
 }

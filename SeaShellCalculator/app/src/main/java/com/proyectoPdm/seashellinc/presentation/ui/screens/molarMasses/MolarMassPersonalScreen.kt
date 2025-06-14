@@ -1,6 +1,7 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,14 +29,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.proyectoPdm.seashellinc.presentation.navigation.CompoundScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassPersonalScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
 import com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses.MolarMassPersonalViewModel
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
+import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
+import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 
 
 @Composable
@@ -113,10 +121,22 @@ fun MolarMassPersonalScreen(
                         .fillMaxWidth()
 
                 ) {
-                    if (isLoading){
-                        Box(modifier = Modifier.fillMaxSize().align(Alignment.CenterHorizontally)){
+                    if (isLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .align(Alignment.CenterHorizontally)
+                        ) {
                             CircularProgressIndicator()
                         }
+                    } else if (!errorMessage.isEmpty()) {
+                        Text(
+                            errorMessage,
+                            fontFamily = MontserratFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = CitrineBrown
+                        )
                     } else {
                         LazyColumn(
                             modifier = Modifier
@@ -127,7 +147,21 @@ fun MolarMassPersonalScreen(
 
                         ) {
                             items(filteredList) { item ->
-                                item.compoundName
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable{
+                                            navController.navigate(
+                                                CompoundScreenSerializable(item.compoundName)
+                                            )
+                                        }
+                                ) {
+                                    Text(
+                                        item.compoundName,
+                                        fontFamily = MontserratFontFamily,
+                                        fontSize = 10.sp
+                                    )
+                                }
                             }
                         }
                     }

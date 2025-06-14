@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //alias(libs.plugins.google.devtools.ksp)
     kotlin("plugin.serialization") version "1.9.0"
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
@@ -43,6 +44,12 @@ android {
 }
 
 dependencies {
+    //Room
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+    // Para corrutinas
+    implementation ("androidx.room:room-ktx:2.6.1")
+
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
@@ -52,7 +59,7 @@ dependencies {
     //Hilt
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-compiler:2.50")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //navegación
     implementation(libs.androidx.navigation.compose)
