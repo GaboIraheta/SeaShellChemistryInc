@@ -17,16 +17,10 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,14 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
@@ -51,7 +43,6 @@ import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.SelectionMenu
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorViewModel
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
-import com.proyectoPdm.seashellinc.presentation.ui.theme.Buff
 import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
@@ -59,7 +50,9 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
 @Preview
 @Composable
-fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel = viewModel()) {
+fun MassOverMassCalculator(
+    viewModel: PhysicalCalculatorViewModel = hiltViewModel()
+) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     var selectedOutput by remember { mutableStateOf(ToCalculate.CONCENTRATION) }
@@ -67,8 +60,6 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel = viewModel())
     val solute by viewModel.solute.collectAsState()
     val solvent by viewModel.solvent.collectAsState()
     val concentration by viewModel.concentration.collectAsState()
-
-    val entry = ToCalculate.CONCENTRATION.label
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
@@ -184,9 +175,6 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel = viewModel())
                 )
             }
 
-
-            //TODO: Fix disposition of this row; also, implement AppButton.kt (hopefully it has changed its onClick issue)
-
             Spacer(Modifier.height(40.dp))
 
             CalcTextField(
@@ -211,8 +199,14 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel = viewModel())
                 label = "Concentración (%)",
                 enable = selectedOutput != ToCalculate.CONCENTRATION
             )
+            Spacer(Modifier.height(40.dp))
 
             //TODO: Add "clean" button to clear all inputs
+            AppButton(
+                text = "Limpiar",
+                width = 120.dp,
+                onClick = { viewModel.clearAllInputs() }
+            )
         }
     }
 }
