@@ -21,10 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
-
 
 @Composable
 fun MolarMassScreen(navController: NavController) {
@@ -71,4 +71,12 @@ fun MolarMassScreen(navController: NavController) {
         }
 
     }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MolarMassScreenPreview() {
+    val navController = rememberNavController() // NavController falso
+
+    MolarMassScreen(navController)
 }

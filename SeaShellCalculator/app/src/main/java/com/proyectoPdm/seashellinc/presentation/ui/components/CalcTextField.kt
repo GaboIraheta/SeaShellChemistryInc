@@ -38,7 +38,7 @@ fun CalcTextField(
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(2.dp))
         TextField(
             value = input,
             onValueChange = onValueChange,
