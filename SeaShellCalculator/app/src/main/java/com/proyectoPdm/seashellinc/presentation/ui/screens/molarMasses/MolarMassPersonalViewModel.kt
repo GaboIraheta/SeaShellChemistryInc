@@ -9,9 +9,8 @@ import com.proyectoPdm.seashellinc.data.model.Compound
 import com.proyectoPdm.seashellinc.data.model.Result
 import com.proyectoPdm.seashellinc.data.repository.CompoundRepository
 import com.proyectoPdm.seashellinc.utils.ConnectivityHelper
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,18 +68,27 @@ class MolarMassPersonalViewModel @Inject constructor(
                         db.CompoundDao().addCompound(CompoundEntity(compound = item))
                     }
                 } else {
-                    val result = db.CompoundDao().getCompoundList().firstOrNull()
+                    try {
+                        withTimeout(3_000L) {
+                            val result = db.CompoundDao().getCompoundList().firstOrNull()
 
-                    if (result?.isEmpty() == true){
-                        return@launch
-                    }
+                            if (result?.isEmpty() == true) {
+                                _errorMessage.value = "No hay compuestos en la base local."
+                                return@withTimeout
+                            }
 
-                    db.CompoundDao().getCompoundList().collect { compoundList ->
-                        _compoundList.value = compoundList
+                            db.CompoundDao().getCompoundList().collect { compoundList ->
+                                _compoundList.value = compoundList
+                            }
+                        }
+                    } catch (_: TimeoutCancellationException) {
+                        _errorMessage.value = "Tiempo de espera agotado al cargar los datos locales."
                     }
                 }
             } catch (e : Exception){
                 _errorMessage.value = "Error: ${e.message}"
+            } finally {
+                _isLoading.value = false
             }
         }
     }

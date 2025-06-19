@@ -97,10 +97,11 @@ fun MolarMassPersonalScreen(
                 }
             }
 
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp),horizontalAlignment = Alignment.CenterHorizontally) {
+                Spacer(Modifier.height(30.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppTextField(
@@ -110,7 +111,7 @@ fun MolarMassPersonalScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Column(
                     modifier = Modifier
@@ -118,7 +119,7 @@ fun MolarMassPersonalScreen(
                         .background(MainBlue)
                         .padding(20.dp)
                         .height(500.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.85f)
 
                 ) {
                     if (isLoading) {
@@ -127,16 +128,34 @@ fun MolarMassPersonalScreen(
                                 .fillMaxSize()
                                 .align(Alignment.CenterHorizontally)
                         ) {
-                            CircularProgressIndicator()
+                            Column(
+                                modifier = Modifier
+                                    .background(Background)
+                                    .padding(30.dp)
+                                    .fillMaxHeight()
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
                     } else if (!errorMessage.isEmpty()) {
-                        Text(
-                            errorMessage,
-                            fontFamily = MontserratFontFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp,
-                            color = CitrineBrown
-                        )
+                        Column(
+                            modifier = Modifier
+                                .background(Background)
+                                .padding(30.dp)
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                errorMessage,
+                                fontFamily = MontserratFontFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                color = CitrineBrown
+                            )
+                        }
                     } else {
                         LazyColumn(
                             modifier = Modifier
@@ -150,7 +169,7 @@ fun MolarMassPersonalScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clickable{
+                                        .clickable {
                                             navController.navigate(
                                                 CompoundScreenSerializable(item.compoundName)
                                             )

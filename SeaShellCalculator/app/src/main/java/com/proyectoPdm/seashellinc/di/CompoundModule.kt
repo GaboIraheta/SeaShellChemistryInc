@@ -2,7 +2,6 @@ package com.proyectoPdm.seashellinc.di
 
 import android.content.Context
 import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
-import com.proyectoPdm.seashellinc.data.database.InitDatabase
 import com.proyectoPdm.seashellinc.data.remote.CompoundApiService
 import com.proyectoPdm.seashellinc.data.repository.CompoundRepository
 import com.proyectoPdm.seashellinc.utils.ConnectivityHelper
@@ -19,7 +18,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object CompoundModule {
-    private const val BASE_URL = "" //TODO: Agregar la url de la api (investigar como aplicar variables de entorno)
+    private const val BASE_URL = "https://dog.ceo/api/" //TODO: Agregar la url de la api (investigar como aplicar variables de entorno)
 
     @Provides
     @Singleton
@@ -46,11 +45,5 @@ object CompoundModule {
     @Singleton
     fun provideConnectivityHelper(@ApplicationContext context: Context) : ConnectivityHelper{
         return ConnectivityHelper(context)
-    }
-    
-    @Provides
-    @Singleton
-    fun provideDatabaseInstance() : CompoundDatabase {
-        return InitDatabase.database
     }
 }

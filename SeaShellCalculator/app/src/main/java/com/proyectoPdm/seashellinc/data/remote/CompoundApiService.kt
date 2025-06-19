@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 
 interface CompoundApiService {
-    @GET(/*Api url*/)
+    @GET(/*Api url*/"/getAll")
     suspend fun getCompounds() : Response<CompoundApiResponse>  //TODO: Configurar que mande como argumentos el correo del usuario y el token de autenticación
 
     //TODO Hacer el post

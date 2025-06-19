@@ -40,7 +40,8 @@ fun Navigation() {
         }
 
         composable<MolarMassScreenSerializable> {
-            MolarMassScreen(navController)
+            //MolarMassScreen(navController)
+            MolarMassPersonalScreen(navController)
         }
 
         composable<MolarMassPersonalScreenSerializable> {
