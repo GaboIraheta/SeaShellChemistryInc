@@ -6,5 +6,6 @@ data class Element(
     val atomicNumber: Int,
     val group: Int,
     val period: Int,
-    val category: ElementCategory
+    val category: ElementCategory,
+    val atomicMass: Double
 )
