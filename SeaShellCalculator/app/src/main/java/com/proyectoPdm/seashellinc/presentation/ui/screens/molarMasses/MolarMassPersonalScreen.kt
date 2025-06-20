@@ -137,7 +137,7 @@ fun MolarMassPersonalScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                CircularProgressIndicator()
+                                CircularProgressIndicator(color = MainBlue)
                             }
                         }
                     } else if (!errorMessage.isEmpty()) {
