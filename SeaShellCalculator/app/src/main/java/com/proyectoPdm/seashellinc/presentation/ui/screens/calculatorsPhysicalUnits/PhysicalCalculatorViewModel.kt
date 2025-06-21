@@ -175,7 +175,7 @@ class PhysicalCalculatorViewModel: ViewModel() {
                 }
                 else {
                     handleCalculation(
-                        calculate = { Calculator.calculateSoluteMV(soluteVal, concentrationVal) },
+                        calculate = { Calculator.calculateSolventMV(soluteVal, concentrationVal) },
                         valueToUpdate = _solvent
                     )
                 }
@@ -200,7 +200,7 @@ class PhysicalCalculatorViewModel: ViewModel() {
                 }
                 else {
                     handleCalculation(
-                        calculate = { Calculator.calculateSoluteMV(soluteVal, solventVal) },
+                        calculate = { Calculator.calculateConcentrationMV(soluteVal, solventVal) },
                         valueToUpdate = _concentration
                     )
                 }
@@ -223,7 +223,7 @@ class PhysicalCalculatorViewModel: ViewModel() {
             }
             else {
                 handleCalculation(
-                    calculate = { Calculator.calculateSoluteMV(solventVal, concentrationVal) },
+                    calculate = { Calculator.calculateSolutePPM(solventVal, concentrationVal) },
                     valueToUpdate = _solute
                 )
             }
@@ -247,7 +247,7 @@ class PhysicalCalculatorViewModel: ViewModel() {
                 }
                 else {
                     handleCalculation(
-                        calculate = { Calculator.calculateSoluteMV(soluteVal, concentrationVal) },
+                        calculate = { Calculator.calculateSolventPPM(soluteVal, concentrationVal) },
                         valueToUpdate = _solvent
                     )
                 }
@@ -272,7 +272,7 @@ class PhysicalCalculatorViewModel: ViewModel() {
                 }
                 else {
                     handleCalculation(
-                        calculate = { Calculator.calculateSoluteMV(soluteVal, solventVal) },
+                        calculate = { Calculator.calculateConcentrationPPM(soluteVal, solventVal) },
                         valueToUpdate = _concentration
                     )
                 }
