@@ -35,7 +35,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+// import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
 import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
@@ -51,7 +53,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 @Preview
 @Composable
 fun MassOverMassCalculator(
-    viewModel: PhysicalCalculatorViewModel = hiltViewModel()
+    viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
@@ -60,12 +62,13 @@ fun MassOverMassCalculator(
     val solute by viewModel.solute.collectAsState()
     val solvent by viewModel.solvent.collectAsState()
     val concentration by viewModel.concentration.collectAsState()
+    val calculationResult by viewModel.calculationResult.collectAsState()
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSolute()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolvent()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentage()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMMVV()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMMVV()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMMVV()
         }
     }
     Scaffold(
@@ -163,7 +166,11 @@ fun MassOverMassCalculator(
                 SelectionMenu(
                     itemList = ToCalculate.entries.toList(),
                     selectedItem = selectedOutput,
-                    onItemSelected = {item -> selectedOutput = item},
+                    onItemSelected = { item ->
+                        viewModel.clearAllInputs()
+                        selectedOutput = item
+
+                    },
                     itemContent = { item ->
                         Text(
                             text = item.label,
@@ -178,7 +185,13 @@ fun MassOverMassCalculator(
             Spacer(Modifier.height(40.dp))
 
             CalcTextField(
-                input = solute,
+                input = if (selectedOutput == ToCalculate.SOLUTE) {
+                    when (calculationResult) {
+                        is CalculationResult.Success -> (calculationResult as CalculationResult.Success).value
+                        is CalculationResult.Error -> (calculationResult as CalculationResult.Error).value
+                        CalculationResult.Empty -> ""
+                    }
+                } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
                 label = "Soluto (g)",
                 enable = selectedOutput != ToCalculate.SOLUTE
@@ -186,7 +199,13 @@ fun MassOverMassCalculator(
             Spacer(Modifier.height(20.dp))
 
             CalcTextField(
-                input = solvent,
+                input = if (selectedOutput == ToCalculate.SOLVENT) {
+                    when (calculationResult) {
+                        is CalculationResult.Success -> (calculationResult as CalculationResult.Success).value
+                        is CalculationResult.Error -> (calculationResult as CalculationResult.Error).value
+                        CalculationResult.Empty -> ""
+                    }
+                } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
                 label = "Solvente (g)",
                 enable = selectedOutput != ToCalculate.SOLVENT
@@ -194,14 +213,19 @@ fun MassOverMassCalculator(
             Spacer(Modifier.height(20.dp))
 
             CalcTextField(
-                input = concentration,
+                input = if (selectedOutput == ToCalculate.CONCENTRATION) {
+                    when (calculationResult) {
+                        is CalculationResult.Success -> (calculationResult as CalculationResult.Success).value
+                        is CalculationResult.Error -> (calculationResult as CalculationResult.Error).value
+                        CalculationResult.Empty -> ""
+                    }
+                } else concentration,
                 onValueChange = { viewModel.onConcentrationChange(it) },
                 label = "Concentración (%)",
                 enable = selectedOutput != ToCalculate.CONCENTRATION
             )
             Spacer(Modifier.height(40.dp))
 
-            //TODO: Add "clean" button to clear all inputs
             AppButton(
                 text = "Limpiar",
                 width = 120.dp,
