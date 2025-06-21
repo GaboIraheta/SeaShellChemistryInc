@@ -8,7 +8,6 @@ import com.proyectoPdm.seashellinc.data.local.model.Calculator.ZERO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 class PhysicalCalculatorViewModel: ViewModel() {
     private val _solute = MutableStateFlow<String>("")
@@ -38,11 +37,15 @@ class PhysicalCalculatorViewModel: ViewModel() {
         _calculationResult.value = CalculationResult.Empty
     }
 
-    private fun handleCalculation(calculate: () -> BigDecimal?) {
+    private fun handleCalculation(
+        calculate: () -> BigDecimal?,
+        valueToUpdate: MutableStateFlow<String>
+    ) {
         try {
             val result = calculate()
             if (result != null) {
-                _calculationResult.value = CalculationResult.Success(result.setScale(6, RoundingMode.HALF_UP).toPlainString())
+                valueToUpdate.value = result.toPlainString()
+                _calculationResult.value = CalculationResult.Success(valueToUpdate.value)
             }
             else {
                 _calculationResult.value = CalculationResult.Empty
@@ -69,13 +72,17 @@ class PhysicalCalculatorViewModel: ViewModel() {
                     _calculationResult.value = CalculationResult.Error("Porcentaje excesivo")
                 }
                 else {
-                    handleCalculation{ Calculator.calculateSoluteMMVV(solventVal, concentrationVal) }
+                    handleCalculation(
+                        calculate = { Calculator.calculateSoluteMMVV(solventVal, concentrationVal) },
+                        valueToUpdate = _solute
+                    )
                 }
             }
         }
         else {
             _calculationResult.value = CalculationResult.Empty
         }
+
     }
 
     fun calculateRequiredSolventMMVV() {
@@ -94,9 +101,10 @@ class PhysicalCalculatorViewModel: ViewModel() {
                     if (concentrationVal > HUNDRED) {
                         _calculationResult.value = CalculationResult.Error("Porcentaje excesivo")
                     } else {
-                        handleCalculation {
-                            Calculator.calculateSolventMMVV(soluteVal, concentrationVal)
-                        }
+                        handleCalculation (
+                            calculate = { Calculator.calculateSolventMMVV(soluteVal, concentrationVal) },
+                            valueToUpdate = _solvent
+                        )
                     }
                 }
             }
@@ -119,7 +127,10 @@ class PhysicalCalculatorViewModel: ViewModel() {
                     _calculationResult.value = CalculationResult.Error("Solución cero")
                 }
                 else {
-                    handleCalculation{ Calculator.calculateConcentrationMMVV(soluteVal, solventVal) }
+                    handleCalculation(
+                        calculate = { Calculator.calculateConcentrationMMVV(soluteVal, solventVal) },
+                        valueToUpdate = _concentration
+                    )
                 }
             }
         }
@@ -130,129 +141,129 @@ class PhysicalCalculatorViewModel: ViewModel() {
 
     // Estas funciones son para las calculadoras de masa sobre volumen
 
-    fun calculateRequiredSoluteMV() {
-        val solventVal = _solvent.value.toBigDecimalOrNull()
-        val concentrationVal =_concentration.value.toBigDecimalOrNull()
-
-        if (solventVal != null && concentrationVal != null) {
-            if (solventVal < ZERO || concentrationVal < ZERO){
-                _calculationResult.value = CalculationResult.Error("Valores negativos")
-            }
-            else {
-                handleCalculation{ Calculator.calculateSoluteMV(solventVal, concentrationVal) }
-            }
-        }
-        else {
-            _calculationResult.value = CalculationResult.Empty
-        }
-    }
-
-    fun calculateRequiredSolventMV() {
-        val soluteVal =_solute.value.toBigDecimalOrNull()
-        val concentrationVal =_concentration.value.toBigDecimalOrNull()
-
-        if (soluteVal != null && concentrationVal != null){
-            if (soluteVal < ZERO || concentrationVal < ZERO){
-                _calculationResult.value = CalculationResult.Error("Valores negativos")
-            }
-            else {
-                if (concentrationVal == ZERO){
-                    _calculationResult.value = CalculationResult.Error("Concentración cero")
-                }
-                else {
-                    handleCalculation{ Calculator.calculateSolventMV(soluteVal, concentrationVal) }
-                }
-            }
-        }
-        else {
-            _calculationResult.value = CalculationResult.Empty
-        }
-    }
-
-    fun calculateConcentrationPercentageMV() {
-        val soluteVal =_solute.value.toBigDecimalOrNull()
-        val solventVal =_solvent.value.toBigDecimalOrNull()
-
-        if (solventVal != null && soluteVal != null){
-            if (soluteVal < ZERO || solventVal < ZERO){
-                _calculationResult.value = CalculationResult.Error("Valores negativos")
-            }
-            else {
-                if (solventVal == ZERO){
-                    _calculationResult.value = CalculationResult.Error("Solvente cero")
-                }
-                else {
-                    handleCalculation{ Calculator.calculateConcentrationMV(soluteVal, solventVal) }
-                }
-            }
-        }
-        else {
-            _calculationResult.value = CalculationResult.Empty
-        }
-    }
-
-    // Estas funciones son para las calculadoras de partes por millón
-
-    fun calculateRequiredSolutePPM() {
-        val solventVal = _solvent.value.toBigDecimalOrNull()
-        val concentrationVal =_concentration.value.toBigDecimalOrNull()
-
-        if (solventVal != null && concentrationVal != null) {
-            if (solventVal < ZERO || concentrationVal < ZERO){
-                _calculationResult.value = CalculationResult.Error("Valores negativos")
-            }
-            else {
-                handleCalculation{ Calculator.calculateSolutePPM(solventVal, concentrationVal) }
-            }
-        }
-        else {
-            _calculationResult.value = CalculationResult.Empty
-        }
-    }
-
-    fun calculateRequiredSolventPPM() {
-        val soluteVal =_solute.value.toBigDecimalOrNull()
-        val concentrationVal =_concentration.value.toBigDecimalOrNull()
-
-        if (soluteVal != null && concentrationVal != null){
-            if (soluteVal < ZERO || concentrationVal < ZERO){
-                _calculationResult.value = CalculationResult.Error("Valores negativos")
-            }
-            else {
-                if (concentrationVal == ZERO){
-                    _calculationResult.value = CalculationResult.Error("Concentración cero")
-                }
-                else {
-                    handleCalculation{ Calculator.calculateSolventPPM(soluteVal, concentrationVal) }
-                }
-            }
-        }
-        else {
-            _calculationResult.value = CalculationResult.Empty
-        }
-    }
-
-    fun calculateConcentrationPercentagePPM() {
-        val soluteVal =_solute.value.toBigDecimalOrNull()
-        val solventVal =_solvent.value.toBigDecimalOrNull()
-
-        if (solventVal != null && soluteVal != null){
-            if (soluteVal < ZERO || solventVal < ZERO){
-                _calculationResult.value = CalculationResult.Error("Valores negativos")
-            }
-            else {
-                if (solventVal == ZERO){
-                    _calculationResult.value = CalculationResult.Error("Solvente cero")
-                }
-                else {
-                    handleCalculation{ Calculator.calculateConcentrationPPM(soluteVal, solventVal) }
-                }
-            }
-        }
-        else {
-            _calculationResult.value = CalculationResult.Empty
-        }
-    }
+//    fun calculateRequiredSoluteMV() {
+//        val solventVal = _solvent.value.toBigDecimalOrNull()
+//        val concentrationVal =_concentration.value.toBigDecimalOrNull()
+//
+//        if (solventVal != null && concentrationVal != null) {
+//            if (solventVal < ZERO || concentrationVal < ZERO){
+//                _calculationResult.value = CalculationResult.Error("Valores negativos")
+//            }
+//            else {
+//                handleCalculation{ Calculator.calculateSoluteMV(solventVal, concentrationVal) }
+//            }
+//        }
+//        else {
+//            _calculationResult.value = CalculationResult.Empty
+//        }
+//    }
+//
+//    fun calculateRequiredSolventMV() {
+//        val soluteVal =_solute.value.toBigDecimalOrNull()
+//        val concentrationVal =_concentration.value.toBigDecimalOrNull()
+//
+//        if (soluteVal != null && concentrationVal != null){
+//            if (soluteVal < ZERO || concentrationVal < ZERO){
+//                _calculationResult.value = CalculationResult.Error("Valores negativos")
+//            }
+//            else {
+//                if (concentrationVal == ZERO){
+//                    _calculationResult.value = CalculationResult.Error("Concentración cero")
+//                }
+//                else {
+//                    handleCalculation{ Calculator.calculateSolventMV(soluteVal, concentrationVal) }
+//                }
+//            }
+//        }
+//        else {
+//            _calculationResult.value = CalculationResult.Empty
+//        }
+//    }
+//
+//    fun calculateConcentrationPercentageMV() {
+//        val soluteVal =_solute.value.toBigDecimalOrNull()
+//        val solventVal =_solvent.value.toBigDecimalOrNull()
+//
+//        if (solventVal != null && soluteVal != null){
+//            if (soluteVal < ZERO || solventVal < ZERO){
+//                _calculationResult.value = CalculationResult.Error("Valores negativos")
+//            }
+//            else {
+//                if (solventVal == ZERO){
+//                    _calculationResult.value = CalculationResult.Error("Solvente cero")
+//                }
+//                else {
+//                    handleCalculation{ Calculator.calculateConcentrationMV(soluteVal, solventVal) }
+//                }
+//            }
+//        }
+//        else {
+//            _calculationResult.value = CalculationResult.Empty
+//        }
+//    }
+//
+//    // Estas funciones son para las calculadoras de partes por millón
+//
+//    fun calculateRequiredSolutePPM() {
+//        val solventVal = _solvent.value.toBigDecimalOrNull()
+//        val concentrationVal =_concentration.value.toBigDecimalOrNull()
+//
+//        if (solventVal != null && concentrationVal != null) {
+//            if (solventVal < ZERO || concentrationVal < ZERO){
+//                _calculationResult.value = CalculationResult.Error("Valores negativos")
+//            }
+//            else {
+//                handleCalculation{ Calculator.calculateSolutePPM(solventVal, concentrationVal) }
+//            }
+//        }
+//        else {
+//            _calculationResult.value = CalculationResult.Empty
+//        }
+//    }
+//
+//    fun calculateRequiredSolventPPM() {
+//        val soluteVal =_solute.value.toBigDecimalOrNull()
+//        val concentrationVal =_concentration.value.toBigDecimalOrNull()
+//
+//        if (soluteVal != null && concentrationVal != null){
+//            if (soluteVal < ZERO || concentrationVal < ZERO){
+//                _calculationResult.value = CalculationResult.Error("Valores negativos")
+//            }
+//            else {
+//                if (concentrationVal == ZERO){
+//                    _calculationResult.value = CalculationResult.Error("Concentración cero")
+//                }
+//                else {
+//                    handleCalculation{ Calculator.calculateSolventPPM(soluteVal, concentrationVal) }
+//                }
+//            }
+//        }
+//        else {
+//            _calculationResult.value = CalculationResult.Empty
+//        }
+//    }
+//
+//    fun calculateConcentrationPercentagePPM() {
+//        val soluteVal =_solute.value.toBigDecimalOrNull()
+//        val solventVal =_solvent.value.toBigDecimalOrNull()
+//
+//        if (solventVal != null && soluteVal != null){
+//            if (soluteVal < ZERO || solventVal < ZERO){
+//                _calculationResult.value = CalculationResult.Error("Valores negativos")
+//            }
+//            else {
+//                if (solventVal == ZERO){
+//                    _calculationResult.value = CalculationResult.Error("Solvente cero")
+//                }
+//                else {
+//                    handleCalculation{ Calculator.calculateConcentrationPPM(soluteVal, solventVal) }
+//                }
+//            }
+//        }
+//        else {
+//            _calculationResult.value = CalculationResult.Empty
+//        }
+//    }
 
     fun clearAllInputs() {
         _solute.value = ""

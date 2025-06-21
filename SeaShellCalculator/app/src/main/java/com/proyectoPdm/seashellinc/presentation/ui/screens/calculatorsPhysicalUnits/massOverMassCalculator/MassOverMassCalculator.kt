@@ -167,9 +167,8 @@ fun MassOverMassCalculator(
                     itemList = ToCalculate.entries.toList(),
                     selectedItem = selectedOutput,
                     onItemSelected = { item ->
-                        viewModel.clearAllInputs()
+                        if (calculationResult is CalculationResult.Error) viewModel.clearAllInputs()
                         selectedOutput = item
-
                     },
                     itemContent = { item ->
                         Text(
