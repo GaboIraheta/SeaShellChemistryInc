@@ -52,7 +52,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
 @Preview
 @Composable
-fun MassOverMassCalculator(
+fun VolumeOverVolumeCalculator(
     viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -146,7 +146,7 @@ fun MassOverMassCalculator(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "PORCENTAJE REFERIDO A LA MASA",
+                    text = "PORCENTAJE REFERIDO AL VOLUMEN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
@@ -192,7 +192,7 @@ fun MassOverMassCalculator(
                     }
                 } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
-                label = "Soluto (g)",
+                label = "Soluto (mL)",
                 enable = selectedOutput != ToCalculate.SOLUTE
             )
             Spacer(Modifier.height(20.dp))
@@ -206,7 +206,7 @@ fun MassOverMassCalculator(
                     }
                 } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
-                label = "Solvente (g)",
+                label = "Solvente (mL)",
                 enable = selectedOutput != ToCalculate.SOLVENT
             )
             Spacer(Modifier.height(20.dp))

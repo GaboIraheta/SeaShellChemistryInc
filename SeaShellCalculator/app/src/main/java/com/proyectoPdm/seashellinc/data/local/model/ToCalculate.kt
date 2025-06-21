@@ -1,7 +1,7 @@
 package com.proyectoPdm.seashellinc.data.local.model
 
-enum class ToCalculate {
-    SOLUTE,
-    SOLVENT,
-    CONCENTRATION
+enum class ToCalculate(val label: String) {
+    SOLUTE(label = "Soluto"),
+    SOLVENT(label = "Solvente"),
+    CONCENTRATION(label = "Concentración")
 }

@@ -52,7 +52,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
 @Preview
 @Composable
-fun MassOverMassCalculator(
+fun PartsPerMillionCalculator(
     viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -66,9 +66,9 @@ fun MassOverMassCalculator(
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMMVV()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMMVV()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMMVV()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSolutePPM()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventPPM()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentagePPM()
         }
     }
     Scaffold(
@@ -146,7 +146,7 @@ fun MassOverMassCalculator(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "PORCENTAJE REFERIDO A LA MASA",
+                    text = "CONCENTRACIÓN EN PARTES POR MILLÓN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
@@ -192,7 +192,7 @@ fun MassOverMassCalculator(
                     }
                 } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
-                label = "Soluto (g)",
+                label = "Soluto (mg)",
                 enable = selectedOutput != ToCalculate.SOLUTE
             )
             Spacer(Modifier.height(20.dp))
@@ -206,7 +206,7 @@ fun MassOverMassCalculator(
                     }
                 } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
-                label = "Solvente (g)",
+                label = "Solvente (L)",
                 enable = selectedOutput != ToCalculate.SOLVENT
             )
             Spacer(Modifier.height(20.dp))
@@ -220,7 +220,7 @@ fun MassOverMassCalculator(
                     }
                 } else concentration,
                 onValueChange = { viewModel.onConcentrationChange(it) },
-                label = "Concentración (%)",
+                label = "Concentración (ppm)",
                 enable = selectedOutput != ToCalculate.CONCENTRATION
             )
             Spacer(Modifier.height(40.dp))
