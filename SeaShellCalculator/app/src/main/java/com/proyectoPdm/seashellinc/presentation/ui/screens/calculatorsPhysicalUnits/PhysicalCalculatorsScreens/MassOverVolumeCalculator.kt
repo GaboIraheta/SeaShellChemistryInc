@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.massOverMassCalculator
+package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,13 +16,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-// import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,31 +31,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+// import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
 import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
+import com.proyectoPdm.seashellinc.presentation.ui.components.SelectionMenu
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorViewModel
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
-import com.proyectoPdm.seashellinc.presentation.ui.theme.Buff
 import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-
-/**
- * Función de la página de calculadora 1
- * Se espera que sea usada como fondo de todas las calculadoras de las unidades físicas de concentración.
- *
- * TODO: Si por algún motivo no está, agregar la dependencia androidx.lifecycle.compose
- * **/
+@Preview
 @Composable
-fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel /*= viewModel() */) {
+fun MassOverVolumeCalculator(
+    viewModel: PhysicalCalculatorViewModel = viewModel()
+) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     var selectedOutput by remember { mutableStateOf(ToCalculate.CONCENTRATION) }
@@ -65,12 +62,13 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel /*= viewModel(
     val solute by viewModel.solute.collectAsState()
     val solvent by viewModel.solvent.collectAsState()
     val concentration by viewModel.concentration.collectAsState()
-
+    val calculationResult by viewModel.calculationResult.collectAsState()
+    
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSolute()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolvent()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentage()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMV()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMV()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMV()
         }
     }
     Scaffold(
@@ -100,17 +98,26 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel /*= viewModel(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.Top
             ) {
-                Box(Modifier.height(200.dp).background(Color.Black).width(8.dp))
+                Box(Modifier
+                    .height(200.dp)
+                    .background(Color.Black)
+                    .width(8.dp))
                 Spacer(Modifier.width(10.dp))
-                Box(Modifier.height(300.dp).background(MainBlue).width(8.dp))
+                Box(Modifier
+                    .height(300.dp)
+                    .background(MainBlue)
+                    .width(8.dp))
                 Spacer(Modifier.width(10.dp))
             }
         }
 
+        val scrollState = rememberScrollState()
+
         Column (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = navigationBarHeight),
+                .padding(bottom = navigationBarHeight)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(17.dp))
@@ -139,51 +146,51 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel /*= viewModel(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "PORCENTAJE REFERIDO A LA MASA",
+                    text = "PORCENTAJE REFERIDO A LA MASA SOBRE EL VOLUMEN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
                 )
             }
             Spacer(Modifier.height(50.dp))
-            Text(
-                text = "Encontrar:",
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(0.65f)
+            ){
+                Text(
+                    text = "Encontrar:",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.width(16.dp))
 
-            //TODO: Fix disposition of this row; also, implement AppButton.kt (hopefully it has changed its onClick issue)
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                listOf(
-                    ToCalculate.CONCENTRATION,
-                    ToCalculate.SOLUTE,
-                    ToCalculate.SOLVENT
-                ).forEach { option ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Button(
-                            onClick = { selectedOutput = option },
-                            colors =
-                                ButtonDefaults.buttonColors(MainBlue),
-                            shape = RoundedCornerShape(5.dp),
-                        ) {
-                            Text(
-                                text = when (option) {
-                                    ToCalculate.SOLUTE -> "Soluto"
-                                    ToCalculate.SOLVENT -> "Solvente"
-                                    ToCalculate.CONCENTRATION -> "Concentración"
-                                },
-                                fontWeight = FontWeight.Bold,
-                                color = Buff,
-                                textAlign = TextAlign.Center,
-                                style = TextStyle(fontSize = 15.sp)
-                            )
-                        }
-                    }
-                }
+                SelectionMenu(
+                    itemList = ToCalculate.entries.toList(),
+                    selectedItem = selectedOutput,
+                    onItemSelected = { item ->
+                        if (calculationResult is CalculationResult.Error) viewModel.clearAllInputs()
+                        selectedOutput = item
+                    },
+                    itemContent = { item ->
+                        Text(
+                            text = item.label,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-            Spacer(Modifier.height(70.dp))
+
+            Spacer(Modifier.height(40.dp))
 
             CalcTextField(
-                input = solute,
+                input = if (selectedOutput == ToCalculate.SOLUTE) {
+                    when (calculationResult) {
+                        is CalculationResult.Success -> (calculationResult as CalculationResult.Success).value
+                        is CalculationResult.Error -> (calculationResult as CalculationResult.Error).value
+                        CalculationResult.Empty -> ""
+                    }
+                } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
                 label = "Soluto (g)",
                 enable = selectedOutput != ToCalculate.SOLUTE
@@ -191,21 +198,38 @@ fun MassOverMassCalculator(viewModel: PhysicalCalculatorViewModel /*= viewModel(
             Spacer(Modifier.height(20.dp))
 
             CalcTextField(
-                input = solvent,
+                input = if (selectedOutput == ToCalculate.SOLVENT) {
+                    when (calculationResult) {
+                        is CalculationResult.Success -> (calculationResult as CalculationResult.Success).value
+                        is CalculationResult.Error -> (calculationResult as CalculationResult.Error).value
+                        CalculationResult.Empty -> ""
+                    }
+                } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
-                label = "Solvente (g)",
+                label = "Solvente (mL)",
                 enable = selectedOutput != ToCalculate.SOLVENT
             )
             Spacer(Modifier.height(20.dp))
 
             CalcTextField(
-                input = concentration,
+                input = if (selectedOutput == ToCalculate.CONCENTRATION) {
+                    when (calculationResult) {
+                        is CalculationResult.Success -> (calculationResult as CalculationResult.Success).value
+                        is CalculationResult.Error -> (calculationResult as CalculationResult.Error).value
+                        CalculationResult.Empty -> ""
+                    }
+                } else concentration,
                 onValueChange = { viewModel.onConcentrationChange(it) },
                 label = "Concentración (%)",
                 enable = selectedOutput != ToCalculate.CONCENTRATION
             )
+            Spacer(Modifier.height(40.dp))
 
-            //TODO: Add "clean" button to clear all inputs
+            AppButton(
+                text = "Limpiar",
+                width = 120.dp,
+                onClick = { viewModel.clearAllInputs() }
+            )
         }
     }
 }
