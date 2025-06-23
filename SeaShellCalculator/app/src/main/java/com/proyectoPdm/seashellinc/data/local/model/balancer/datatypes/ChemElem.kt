@@ -1,20 +1,14 @@
 package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.FormulaItem
-
 data class ChemElem (val name: String, val count: Int): FormulaItem {
-    init {
-        if (count < 1) {
-            throw IllegalStateException("Assertion Error: Count debe ser un entero positivo, pero se obtuvo $count para el elemento $name")
-        }
-    }
+    init { require (count >= 1) {"Assertion Error: Count must be a positive integer"} }
 
     override fun getElements(resultSet: MutableSet<String>) {
-        resultSet.add(name)
+        resultSet.add(this.name)
     }
 
-    override fun countElement(targetName: String): Long {
-        return if (targetName == name) this.count.toLong() else 0
+    override fun countElement(n: String): Long {
+        return if (n == this.name) this.count.toLong() else 0
     }
 
     fun toDisplayString(): String {

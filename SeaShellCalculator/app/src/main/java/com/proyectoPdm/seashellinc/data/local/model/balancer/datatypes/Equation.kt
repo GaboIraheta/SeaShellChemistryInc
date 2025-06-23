@@ -1,24 +1,19 @@
 package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.ParseError
-
-data class Equation(val leftSide: List<Term>, val rightSide: List<Term>) {
-    init {
-        if (leftSide.isEmpty() || rightSide.isEmpty()) {
-            throw ParseError("La ecuación debe términos en ambos lados", -1)
-        }
-    }
-
-    fun getElements(): MutableSet<String> {
+data class Equation(
+    val leftSide: List<Term>,
+    val rightSide: List<Term>
+) {
+    fun getElements(): List<String> {
         val resultSet = mutableSetOf<String>()
-        (leftSide + rightSide).forEach { item ->
+        (this.leftSide + this.rightSide).forEach { item ->
             item.getElements(resultSet)
         }
-        return resultSet
+        return resultSet.toList()
     }
 
     fun toDisplayString(coefs: List<Long>? = null): String {
-        if (coefs != null && coefs.size != leftSide.size + rightSide.size) {
+        if (coefs != null && coefs.size != this.leftSide.size + this.rightSide.size) {
             throw IllegalStateException("Número de coeficientes no coincide")
         }
 

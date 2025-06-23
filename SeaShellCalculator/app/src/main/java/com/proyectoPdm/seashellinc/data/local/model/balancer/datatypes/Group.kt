@@ -1,34 +1,27 @@
 package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.FormulaItem
-import com.proyectoPdm.seashellinc.data.local.model.balancer.ParseError
 import com.proyectoPdm.seashellinc.utils.checkedAddSum
 import com.proyectoPdm.seashellinc.utils.checkedMultiply
 
-data class Group(val items: List<FormulaItem>, val count: Int): FormulaItem {
+data class Group(
+    private val items: List<FormulaItem>,
+    private val count: Int
+): FormulaItem {
+
     init {
-        if (count < 1){
-            throw IllegalStateException("Assertion Error: Count para grupo debe ser un entero positivo, pero se obtuvo $count")
-        }
-        if (items.isEmpty()){
-            throw ParseError("Grupo vacío.", -1)
-        }
+        require (count >= 1) { "Assertion Error: Count must be a positive integer" }
     }
 
     override fun getElements(resultSet: MutableSet<String>) {
-        for (item in items){
+        for (item in this.items){
             item.getElements(resultSet)
         }
     }
 
-    override fun countElement(targetName: String): Long {
+    override fun countElement(name: String): Long {
         var sum: Long = 0
-
-        for (item in items) {
-            sum = checkedAddSum(
-                sum,
-                checkedMultiply(item.countElement(targetName), this.count.toLong())
-            )
+        for (item in this.items) {
+            sum = checkedAddSum(sum, checkedMultiply(item.countElement(name), this.count.toLong()))
         }
         return sum
     }
