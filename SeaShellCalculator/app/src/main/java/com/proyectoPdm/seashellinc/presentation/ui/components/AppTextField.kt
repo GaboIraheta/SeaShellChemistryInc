@@ -50,7 +50,7 @@ fun AppTextField(
             focusedLabelColor = MainBlue,
             cursorColor = MainBlue,
         ),
-        modifier = Modifier.height(30.dp),
+        modifier = Modifier.height(60.dp),
         visualTransformation = visualTransformation
     )
 }
