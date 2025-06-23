@@ -1,6 +1,7 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.compounds
+package com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,37 +31,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
-import com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses.MolarMassScreen
-import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
-import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
-import com.proyectoPdm.seashellinc.data.local.elements
 import com.proyectoPdm.seashellinc.presentation.navigation.CompoundScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
+import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
 import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
+import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
-import kotlin.text.isEmpty
-
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.style.TextAlign
+import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassPersonalScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 
 @Composable
-fun CompoundScreen(
-    navController: NavController,
-    compoundName: String,
-    static: Boolean = true,
-    viewModel: CompoundViewModel = hiltViewModel()
-) {
+fun MolarMassScreen(navController: NavController, viewModel: MolarMassViewModel = hiltViewModel()) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    val compound = viewModel.getCompound(compoundName, static)
-    val isLoading by viewModel.isLoading.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
+    val isLoading = viewModel.isLoading.value
+    val errorMessage = viewModel.errorMessage.value
+    val filteredList by viewModel.filteredList.collectAsState()
+    val query by viewModel.query.collectAsState()
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -103,15 +98,33 @@ fun CompoundScreen(
                     navController.popBackStack()
                 }
             }
-
             Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxSize()
-                    .verticalScroll(scrollState),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier.padding(16.dp).fillMaxSize().verticalScroll(scrollState),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                Spacer(Modifier.height(10.dp))
+
+                Text(
+                    "Lista de \ncompuestos químicos",
+                    color = CitrineBrown,
+                    fontFamily = MontserratFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(Modifier.height(30.dp))
+
+                AppTextField(
+                    value = query.toString(),
+                    onValueChange = viewModel::onValueChange,
+                    label = "Buscar Compuesto"
+                )
+
+
+                Spacer(modifier = Modifier.height(20.dp))
+
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(5.dp))
@@ -121,7 +134,6 @@ fun CompoundScreen(
                         .fillMaxWidth(0.85f)
 
                 ) {
-
                     if (isLoading) {
                         Box(
                             modifier = Modifier
@@ -150,7 +162,7 @@ fun CompoundScreen(
                                     .fillMaxWidth()
                             ) {
                                 Text(
-                                    errorMessage.toString(),
+                                    errorMessage,
                                     fontFamily = MontserratFontFamily,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 20.sp,
@@ -158,49 +170,44 @@ fun CompoundScreen(
                                 )
                             }
                         } else {
-                            Column(
+                            LazyColumn(
                                 modifier = Modifier
                                     .background(Background)
                                     .padding(30.dp)
                                     .fillMaxHeight()
-                                    .fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                                    .fillMaxWidth()
+
                             ) {
-                                Text(
-                                    compound?.compoundName.toString(),
-                                    fontFamily = MontserratFontFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    color = CitrineBrown,
-                                    fontSize = 30.sp,
-                                    textAlign = TextAlign.Center
-                                )
-                                Spacer(Modifier.height(20.dp))
-                                Text(
-                                    compound?.chemicalFormula.toString(),
-                                    fontFamily = MontserratFontFamily,
-                                    fontSize = 20.sp
-                                )
-                                Spacer(Modifier.height(20.dp))
-                                Text(
-                                    "Masa molar: \n${compound?.molarMass}",
-                                    fontFamily = MontserratFontFamily,
-                                    fontSize = 20.sp,
-                                    textAlign = TextAlign.Center
-                                )
+                                items(filteredList) { item ->
+                                    Spacer(Modifier.height(10.dp))
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                navController.navigate(
+                                                    CompoundScreenSerializable(item.compoundName)
+                                                )
+                                            }
+                                    ) {
+                                        Text(
+                                            item.compoundName,
+                                            fontFamily = MontserratFontFamily,
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                    Spacer(Modifier.height(10.dp))
+                                    HorizontalDivider(color = MainBlue)
+                                }
                             }
                         }
                     }
                 }
+                Spacer(Modifier.height(30.dp))
+                AppButton("Ir a lista personal", 190.dp) {
+                    navController.navigate(MolarMassPersonalScreenSerializable)
+                }
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MolarMassScreenPreview() {
-    val navController = rememberNavController() // NavController falso
-
-        MolarMassScreen(navController)
 }

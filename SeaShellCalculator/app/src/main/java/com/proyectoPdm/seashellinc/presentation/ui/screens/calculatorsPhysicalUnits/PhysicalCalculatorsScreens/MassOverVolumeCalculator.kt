@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.massOverMassCalculator
+package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +52,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
 @Preview
 @Composable
-fun MassOverMassCalculator(
+fun MassOverVolumeCalculator(
     viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -66,9 +66,9 @@ fun MassOverMassCalculator(
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMMVV()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMMVV()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMMVV()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMV()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMV()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMV()
         }
     }
     Scaffold(
@@ -146,7 +146,7 @@ fun MassOverMassCalculator(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "PORCENTAJE REFERIDO A LA MASA",
+                    text = "PORCENTAJE REFERIDO A LA MASA SOBRE EL VOLUMEN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
@@ -206,7 +206,7 @@ fun MassOverMassCalculator(
                     }
                 } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
-                label = "Solvente (g)",
+                label = "Solvente (mL)",
                 enable = selectedOutput != ToCalculate.SOLVENT
             )
             Spacer(Modifier.height(20.dp))
