@@ -51,8 +51,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 @Composable
 fun EquationBalancerScreen(
     navController: NavController,
-    // viewModel: EquationBalancerViewModel = hiltViewModel()
-    viewModel: EquationBalancerViewModel = viewModel()
+    viewModel: EquationBalancerViewModel = hiltViewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val uiState by viewModel.uiState.collectAsState()
