@@ -17,6 +17,10 @@ import com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses.MolarMass
 import com.proyectoPdm.seashellinc.presentation.ui.screens.PeriodicTable.PeriodicTableScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.PhysicalUnitsScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.RegisterScreen
+import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.MassOverMassCalculator
+import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.MassOverVolumeCalculator
+import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.PartsPerMillionCalculator
+import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.VolumeOverVolumeCalculator
 
 @Composable
 fun Navigation() {
@@ -67,6 +71,22 @@ fun Navigation() {
         composable<CompoundScreenSerializable>{ compoundName ->
             val args = compoundName.toRoute<CompoundScreenSerializable>()
             CompoundScreen(navController, compoundName = args.compoundName, args.static)
+        }
+
+        composable<MassOverMassCalculatorSerializable> {
+            MassOverMassCalculator(navController)
+        }
+
+        composable<MassOverVolumeCalculatorSerializable> {
+            MassOverVolumeCalculator(navController)
+        }
+
+        composable<PartsPerMillionCalculatorSerializable> {
+            PartsPerMillionCalculator(navController)
+        }
+
+        composable<VolumeOverVolumeCalculatorSerializable> {
+            VolumeOverVolumeCalculator(navController)
         }
     }
 }
