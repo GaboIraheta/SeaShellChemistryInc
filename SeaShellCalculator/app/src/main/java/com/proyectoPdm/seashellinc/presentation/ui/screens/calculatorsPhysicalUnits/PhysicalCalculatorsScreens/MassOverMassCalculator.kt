@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 // import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
 import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
@@ -50,9 +51,9 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-@Preview
 @Composable
 fun MassOverMassCalculator(
+    navController: NavController,
     viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -126,7 +127,10 @@ fun MassOverMassCalculator(
 
             ){
                 Spacer(Modifier.width(50.dp))
-                AppGoBackButton(60.dp){}
+                AppGoBackButton(60.dp){
+                    navController.popBackStack()
+                    viewModel.clearAllInputs()
+                }
             }
 
             Spacer(Modifier.height(16.dp))

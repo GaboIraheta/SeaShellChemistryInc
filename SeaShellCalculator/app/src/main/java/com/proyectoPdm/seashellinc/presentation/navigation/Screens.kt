@@ -38,4 +38,14 @@ object PhysicalUnitsScreenSerializable
 @Serializable
 object RegisterScreenSerializable
 
-//TODO: Agregar los serializables para las páginas de calculadora
+@Serializable
+object MassOverMassCalculatorSerializable
+
+@Serializable
+object MassOverVolumeCalculatorSerializable
+
+@Serializable
+object PartsPerMillionCalculatorSerializable
+
+@Serializable
+object VolumeOverVolumeCalculatorSerializable
