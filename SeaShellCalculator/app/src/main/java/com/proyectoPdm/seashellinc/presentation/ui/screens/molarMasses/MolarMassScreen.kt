@@ -46,7 +46,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.style.TextAlign
 import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassPersonalScreenSerializable
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 
 @Composable
 fun MolarMassScreen(navController: NavController, viewModel: MolarMassViewModel = hiltViewModel()) {
@@ -204,9 +204,9 @@ fun MolarMassScreen(navController: NavController, viewModel: MolarMassViewModel 
                     }
                 }
                 Spacer(Modifier.height(30.dp))
-                AppButton("Ir a lista personal", 190.dp) {
+                AppButton("Ir a lista personal", 190.dp, onClick =  {
                     navController.navigate(MolarMassPersonalScreenSerializable)
-                }
+                })
             }
         }
     }
