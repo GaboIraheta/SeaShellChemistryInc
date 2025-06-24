@@ -41,10 +41,10 @@ class MolarMassPersonalViewModel @Inject constructor(
     val filteredList : StateFlow<List<Compound>> = combine(query, _compoundList) { text, list ->
         if (text.isBlank()) list
         else list.filter { item ->
-            item.compoundName.contains(text, ignoreCase = true) || item.chemicalFormula.contains(
+            item.compoundName.contains(text, ignoreCase = true) || item.chemicalFormula?.contains(
                 text,
                 ignoreCase = true
-            )
+            ) == true
         }
     }.stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
 
@@ -68,7 +68,7 @@ class MolarMassPersonalViewModel @Inject constructor(
                     }
                 } else {
                     try {
-                        withTimeout(3_000L) {
+                        withTimeout(5_000L) {
                             val result = db.CompoundDao().getCompoundList().firstOrNull()
 
                             if (result?.isEmpty() == true) {

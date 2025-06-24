@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.massOverMassCalculator
+package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,14 +32,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 // import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
 import com.proyectoPdm.seashellinc.data.model.calculators.ToCalculate
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.SelectionMenu
@@ -50,9 +50,9 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-@Preview
 @Composable
-fun MassOverMassCalculator(
+fun PartsPerMillionCalculator(
+    navController: NavController,
     viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -66,9 +66,9 @@ fun MassOverMassCalculator(
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMMVV()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMMVV()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMMVV()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSolutePPM()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventPPM()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentagePPM()
         }
     }
     Scaffold(
@@ -126,7 +126,10 @@ fun MassOverMassCalculator(
 
             ){
                 Spacer(Modifier.width(50.dp))
-                AppGoBackButton(60.dp){}
+                AppGoBackButton(60.dp){
+                    viewModel.clearAllInputs()
+                    navController.popBackStack()
+                }
             }
 
             Spacer(Modifier.height(16.dp))
@@ -146,7 +149,7 @@ fun MassOverMassCalculator(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "PORCENTAJE REFERIDO A LA MASA",
+                    text = "CONCENTRACIÓN EN PARTES POR MILLÓN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
@@ -192,7 +195,7 @@ fun MassOverMassCalculator(
                     }
                 } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
-                label = "Soluto (g)",
+                label = "Soluto (mg)",
                 enable = selectedOutput != ToCalculate.SOLUTE
             )
             Spacer(Modifier.height(20.dp))
@@ -206,7 +209,7 @@ fun MassOverMassCalculator(
                     }
                 } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
-                label = "Solvente (g)",
+                label = "Solvente (L)",
                 enable = selectedOutput != ToCalculate.SOLVENT
             )
             Spacer(Modifier.height(20.dp))
@@ -220,7 +223,7 @@ fun MassOverMassCalculator(
                     }
                 } else concentration,
                 onValueChange = { viewModel.onConcentrationChange(it) },
-                label = "Concentración (%)",
+                label = "Concentración (ppm)",
                 enable = selectedOutput != ToCalculate.CONCENTRATION
             )
             Spacer(Modifier.height(40.dp))

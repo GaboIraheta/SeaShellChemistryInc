@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.massOverMassCalculator
+package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
 import com.proyectoPdm.seashellinc.data.model.calculators.ToCalculate
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
+import androidx.navigation.NavController
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.SelectionMenu
@@ -50,9 +51,9 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-@Preview
 @Composable
-fun PartsPerMillionCalculator(
+fun MassOverVolumeCalculator(
+    navController: NavController,
     viewModel: PhysicalCalculatorViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -66,9 +67,9 @@ fun PartsPerMillionCalculator(
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSolutePPM()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventPPM()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentagePPM()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMV()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMV()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMV()
         }
     }
     Scaffold(
@@ -126,7 +127,10 @@ fun PartsPerMillionCalculator(
 
             ){
                 Spacer(Modifier.width(50.dp))
-                AppGoBackButton(60.dp){}
+                AppGoBackButton(60.dp){
+                    navController.popBackStack()
+                    viewModel.clearAllInputs()
+                }
             }
 
             Spacer(Modifier.height(16.dp))
@@ -146,7 +150,7 @@ fun PartsPerMillionCalculator(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "CONCENTRACIÓN EN PARTES POR MILLÓN",
+                    text = "PORCENTAJE REFERIDO A LA MASA SOBRE EL VOLUMEN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
@@ -192,7 +196,7 @@ fun PartsPerMillionCalculator(
                     }
                 } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
-                label = "Soluto (mg)",
+                label = "Soluto (g)",
                 enable = selectedOutput != ToCalculate.SOLUTE
             )
             Spacer(Modifier.height(20.dp))
@@ -206,7 +210,7 @@ fun PartsPerMillionCalculator(
                     }
                 } else solvent,
                 onValueChange = { viewModel.onSolventChange(it) },
-                label = "Solvente (L)",
+                label = "Solvente (mL)",
                 enable = selectedOutput != ToCalculate.SOLVENT
             )
             Spacer(Modifier.height(20.dp))
@@ -220,7 +224,7 @@ fun PartsPerMillionCalculator(
                     }
                 } else concentration,
                 onValueChange = { viewModel.onConcentrationChange(it) },
-                label = "Concentración (ppm)",
+                label = "Concentración (%)",
                 enable = selectedOutput != ToCalculate.CONCENTRATION
             )
             Spacer(Modifier.height(40.dp))
