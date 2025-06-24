@@ -11,8 +11,7 @@ object Balancer {
         try {
             var eqn = Parser(formula).parseEquation()
             var matrix = buildMatrix(eqn)
-            solve(matrix)
-            val coefs = extractCoefficients(matrix).map { it.toInt() }
+            val coefs = extractCoefficients(solve(matrix)).map { it.toInt() }
             checkAnswer(eqn, coefs.toIntArray())
             return BalanceResult.Success(eqn, coefs)
         }

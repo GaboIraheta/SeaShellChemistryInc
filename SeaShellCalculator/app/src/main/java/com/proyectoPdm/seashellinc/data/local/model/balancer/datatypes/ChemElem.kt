@@ -1,5 +1,12 @@
 package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
 
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
+
 data class ChemElem (val name: String, val count: Int): FormulaItem {
     init { require (count >= 1) {"Assertion Error: Count must be a positive integer"} }
 
@@ -11,8 +18,18 @@ data class ChemElem (val name: String, val count: Int): FormulaItem {
         return if (n == this.name) this.count.toLong() else 0
     }
 
-    fun toDisplayString(): String {
-        return if (count == 1) name else "$name$count"
+    fun toAnnotatedString(): AnnotatedString {
+        return buildAnnotatedString {
+            append(name)
+            if (count != 1) {
+                withStyle(SpanStyle(
+                    fontSize = 10.sp,
+                    baselineShift = BaselineShift.Subscript
+                )) {
+                    append(count.toString())
+                }
+            }
+        }
     }
 
 // toHtml() equivalent for Jetpack Compose:

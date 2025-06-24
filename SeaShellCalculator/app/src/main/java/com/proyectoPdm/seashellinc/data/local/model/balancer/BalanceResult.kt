@@ -2,22 +2,22 @@ package com.proyectoPdm.seashellinc.data.local.model.balancer
 
 import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Equation
 
-sealed class BalanceResult {
+sealed interface BalanceResult {
     data class Success(
         val equation: Equation,
         val coefficients: List<Int>
-    ): BalanceResult()
+    ): BalanceResult
 
     data class SyntaxError(
         val message: String,
         val formula: String,
         val start: Int,
         val end: Int
-    ): BalanceResult()
+    ): BalanceResult
 
     data class BalanceError(
         val message: String
-    ): BalanceResult()
+    ): BalanceResult
 
-    data object UnknownError: BalanceResult()
+    data object UnknownError: BalanceResult
 }

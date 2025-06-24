@@ -22,7 +22,7 @@ fun buildMatrix(eqn: Equation): Matrix {
     return matrix
 }
 
-fun solve (matrix: Matrix) {
+fun solve (matrix: Matrix): Matrix {
     matrix.gaussJordanEliminate()
 
     fun countNonzeroCoeffs(row: Int): Int {
@@ -43,6 +43,8 @@ fun solve (matrix: Matrix) {
     matrix.set(matrix.numRows - 1, i, 1)
     matrix.set(matrix.numRows -1, matrix.numCols - 1, 1)
     matrix.gaussJordanEliminate()
+
+    return matrix
 }
 
 fun extractCoefficients(matrix: Matrix): IntArray {
@@ -55,8 +57,8 @@ fun extractCoefficients(matrix: Matrix): IntArray {
     var lcm = 1;
     for (i in 0 until cols - 1) {
         lcm = checkedMultiply(
-            (lcm / gcd(lcm.toLong(), matrix.get(i, i).toLong()).toInt()).toLong(),
-            matrix.get(i, i).toLong()
+            lcm.toLong(),
+            (matrix.get(i, i).toLong() / gcd(lcm.toLong(), matrix.get(i, i).toLong())).toLong()
         ).toInt()
     }
 
@@ -64,7 +66,7 @@ fun extractCoefficients(matrix: Matrix): IntArray {
     for (i in 0 until cols - 1) coefs.add(
         checkedMultiply(
             (lcm / matrix.get(i, i)).toLong(),
-            matrix.get(i, cols - i).toLong()
+            matrix.get(i, cols - 1).toLong()
         ).toInt()
     )
     if (coefs.all { x -> x == 0 }) throw IllegalStateException("Assertion error: All-zero solution")

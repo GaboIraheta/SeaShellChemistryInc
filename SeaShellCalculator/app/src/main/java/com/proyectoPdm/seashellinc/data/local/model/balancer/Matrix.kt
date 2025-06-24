@@ -91,7 +91,7 @@ class Matrix(val numRows: Int, val numCols: Int) {
             this.swapRows(numPivots, pivotRow)
             numPivots++
 
-            for (j in 0 until this.numRows){
+            for (j in numPivots until this.numRows){
                 val g = gcd(pivot.toLong(), cells[j][i].toLong()).toInt()
                 cells[j] = simplifyRow(
                     addRows(

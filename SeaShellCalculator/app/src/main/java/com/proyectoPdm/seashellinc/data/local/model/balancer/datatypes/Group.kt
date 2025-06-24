@@ -1,19 +1,25 @@
 package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
 
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
 import com.proyectoPdm.seashellinc.utils.checkedAddSum
 import com.proyectoPdm.seashellinc.utils.checkedMultiply
 
 data class Group(
     private val items: List<FormulaItem>,
     private val count: Int
-): FormulaItem {
+) : FormulaItem {
 
     init {
-        require (count >= 1) { "Assertion Error: Count must be a positive integer" }
+        require(count >= 1) { "Assertion Error: Count must be a positive integer" }
     }
 
     override fun getElements(resultSet: MutableSet<String>) {
-        for (item in this.items){
+        for (item in this.items) {
             item.getElements(resultSet)
         }
     }
@@ -26,15 +32,28 @@ data class Group(
         return sum
     }
 
-    fun toDisplayString(): String {
-        val innerString = items.joinToString(separator = "") {
-            when (it) {
-                is ChemElem -> it.toDisplayString()
-                is Group -> it.toDisplayString()
-                else -> "" // En caso de tipos inesperados, aunque no debería ocurrir con FormulaItem
+    fun toAnnotatedString(): AnnotatedString {
+        return buildAnnotatedString {
+            append("(")
+            for (item in items) {
+                when (item) {
+                    is ChemElem -> append(item.toAnnotatedString())
+                    is Group -> append(item.toAnnotatedString())
+                    else -> Unit
+                }
+            }
+            append(")")
+            if (count != 1) {
+                withStyle(
+                    SpanStyle(
+                        fontSize = 10.sp,
+                        baselineShift = BaselineShift.Subscript
+                    )
+                ) {
+                    append(count.toString())
+                }
             }
         }
-        return if (count == 1) "($innerString)" else "($innerString)$count"
     }
 
 // toHtml() equivalente para Jetpack Compose:
