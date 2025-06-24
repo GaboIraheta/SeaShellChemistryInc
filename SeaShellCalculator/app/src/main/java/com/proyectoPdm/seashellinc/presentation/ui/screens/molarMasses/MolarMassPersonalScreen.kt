@@ -97,6 +97,7 @@ fun MolarMassPersonalScreen(
                 }
             }
 
+
             Column(modifier = Modifier.padding(16.dp),horizontalAlignment = Alignment.CenterHorizontally) {
                 Spacer(Modifier.height(30.dp))
                 Row(
