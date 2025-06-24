@@ -116,11 +116,10 @@ fun EquationBalancerScreen(
         Column (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = navigationBarHeight)
+                .padding(bottom = navigationBarHeight,top = paddingValues.calculateTopPadding())
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(Modifier.height(17.dp))
             Row (
                 modifier = Modifier.fillMaxWidth()
             ){
@@ -153,7 +152,7 @@ fun EquationBalancerScreen(
                     color = CitrineBrown
                 )
             }
-            Spacer(Modifier.height(50.dp))
+            Spacer(Modifier.height(80.dp))
 
             BalancerTextField(
                 value = uiState.formulaInput,
@@ -192,7 +191,7 @@ fun EquationBalancerScreen(
                         val annotatedEquation = equation.toAnnotatedString(coefficients)
                             Text(
                                 text = annotatedEquation,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyLarge
                             )
                         }
                     }

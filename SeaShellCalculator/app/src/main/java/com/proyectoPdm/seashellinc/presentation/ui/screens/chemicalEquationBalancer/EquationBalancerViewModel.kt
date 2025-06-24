@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-class EquationBalancerViewModel @Inject constructor(): ViewModel() {
+//@HiltViewModel
+class EquationBalancerViewModel //@Inject constructor()
+    : ViewModel() {
     private val _uiState = MutableStateFlow(EquationUiState())
     val uiState: StateFlow<EquationUiState> = _uiState
 
