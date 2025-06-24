@@ -1,6 +1,8 @@
 package com.proyectoPdm.seashellinc.presentation.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 import kotlinx.coroutines.launch
@@ -46,11 +49,12 @@ fun BalancerTextField(
             textFieldValueState = newValue
             onValueChange(newValue.text)
         },
-        label = {
+        placeholder = {
             Text(
                 text = label,
                 fontFamily = MontserratFontFamily,
                 fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
         },
@@ -64,6 +68,7 @@ fun BalancerTextField(
             cursorColor = MainBlue,
         ),
         modifier = Modifier
+            .fillMaxWidth(0.7f)
             .height(120.dp)
             .onFocusChanged { focusState ->
                 if (focusState.isFocused) {

@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model
+package com.proyectoPdm.seashellinc.data.model.calculators
 
 sealed interface CalculationResult {
     data class Success(val value: String) : CalculationResult

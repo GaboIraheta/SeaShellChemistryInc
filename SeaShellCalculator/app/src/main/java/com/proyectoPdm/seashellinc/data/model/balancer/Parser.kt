@@ -1,10 +1,10 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer
+package com.proyectoPdm.seashellinc.data.model.balancer
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.ChemElem
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Equation
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.FormulaItem
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Group
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Term
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.ChemElem
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.Equation
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.FormulaItem
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.Group
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.Term
 import com.proyectoPdm.seashellinc.utils.checkedParsedLong
 
 class Parser(formulaString: String) {
@@ -21,7 +21,7 @@ class Parser(formulaString: String) {
             else if (next == "=") {
                 this.token.consume(next)
                 break
-            } else throw ParseError("Plus or equal sign expected", this.token.pos)
+            } else throw ParseError("Se esperaba un signo positivo o negativo", this.token.pos)
         }
 
         var rhs = mutableListOf<Term>(this.parseTerm())
@@ -32,7 +32,7 @@ class Parser(formulaString: String) {
                 this.token.consume(next)
                 rhs.add(this.parseTerm())
             }
-            else throw ParseError("Plus or end expected", this.token.pos)
+            else throw ParseError("Se esperaba un signo positivo o negativo", this.token.pos)
         }
         return Equation(lhs, rhs)
     }
@@ -57,7 +57,7 @@ class Parser(formulaString: String) {
                 items.add(this.parseElement())
             }
             else if (next != null && Regex("^[0-9]+$").matches(next)){
-                throw ParseError("Invalid term - number not expected", this.token.pos)
+                throw ParseError("Término inválido - número no esperado", this.token.pos)
             }
             else break
         }
@@ -68,7 +68,7 @@ class Parser(formulaString: String) {
             this.token.consume(next)
             next = this.token.peek()
             if (next == null){
-                throw ParseError("Number or sign expected", this.token.pos)
+                throw ParseError("Se esperaba un número o signo", this.token.pos)
             }
             else {
                 charge = this.parseOptionalNumber()
@@ -78,18 +78,18 @@ class Parser(formulaString: String) {
             charge =
                 if (next == "+") +charge
                 else if (next == "-") -charge
-                else throw ParseError("Sign expected", this.token.pos)
+                else throw ParseError("Se esperaba un signo", this.token.pos)
 
             this.token.take()
         }
 
         if (electron) {
-            if (items.isNotEmpty()) throw ParseError("Invalid term - electron needs to stand alone", startPos, this.token.pos)
+            if (items.isNotEmpty()) throw ParseError("Término inválido - el electrón no se debe encontrar acompañado", startPos, this.token.pos)
             if (charge == null) charge = -1
-            if (charge != -1) throw ParseError("Invalid term - invalid charge for electron", startPos, this.token.pos)
+            if (charge != -1) throw ParseError("Término inválido - electrón con carga inválida", startPos, this.token.pos)
         }
         else {
-            if (items.isEmpty()) throw ParseError("Invalid term - empty", startPos, this.token.pos)
+            if (items.isEmpty()) throw ParseError("Término inválido - vacío", startPos, this.token.pos)
             if (charge == null) charge = 0
         }
         return Term(items, charge)

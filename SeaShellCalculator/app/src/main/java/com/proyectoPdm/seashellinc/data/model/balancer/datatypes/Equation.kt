@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
+package com.proyectoPdm.seashellinc.data.model.balancer.datatypes
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import com.proyectoPdm.seashellinc.presentation.ui.theme.Marigold
+import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 
 data class Equation(
     val leftSide: List<Term>,
@@ -25,7 +25,7 @@ data class Equation(
         val rightArrow = "\u2192"
 
         if (coefs != null && coefs.size != this.leftSide.size + this.rightSide.size) {
-            throw IllegalStateException("Mismatched number of coefficients")
+            throw IllegalStateException("Número de coeficientes disparejo")
         }
 
         return buildAnnotatedString {
@@ -44,7 +44,7 @@ data class Equation(
                                     append(coefString)
                                 }
                             }
-                            else withStyle(SpanStyle(color = Marigold, fontWeight = FontWeight.Bold)){
+                            else withStyle(SpanStyle(color = CitrineBrown, fontWeight = FontWeight.ExtraBold)){
                                 append(coefString)
                             }
                         }

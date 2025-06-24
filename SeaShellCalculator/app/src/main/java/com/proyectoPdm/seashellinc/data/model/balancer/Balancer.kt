@@ -1,6 +1,5 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer
+package com.proyectoPdm.seashellinc.data.model.balancer
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Equation
 import com.proyectoPdm.seashellinc.utils.buildMatrix
 import com.proyectoPdm.seashellinc.utils.checkAnswer
 import com.proyectoPdm.seashellinc.utils.extractCoefficients

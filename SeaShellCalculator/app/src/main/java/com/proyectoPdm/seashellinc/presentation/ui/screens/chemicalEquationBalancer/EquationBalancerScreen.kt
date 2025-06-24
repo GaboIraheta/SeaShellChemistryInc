@@ -1,6 +1,7 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.ChemicalEquationBalancer
+package com.proyectoPdm.seashellinc.presentation.ui.screens.chemicalEquationBalancer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,39 +19,44 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.BalancerTextField
+import com.proyectoPdm.seashellinc.presentation.ui.components.SyntaxHighlightedFormula
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
 import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
+import com.proyectoPdm.seashellinc.presentation.ui.theme.LightBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
 @Composable
 fun EquationBalancerScreen(
     navController: NavController,
-    viewModel: EquationBalancerViewModel = hiltViewModel()
+    // viewModel: EquationBalancerViewModel = hiltViewModel()
+    viewModel: EquationBalancerViewModel = viewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val uiState by viewModel.uiState.collectAsState()
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -154,19 +160,73 @@ fun EquationBalancerScreen(
             BalancerTextField(
                 value = uiState.formulaInput,
                 onValueChange = { viewModel.onFormulaInputChange(it) },
-                label = "Cu(NO3)2 = CuO + NO2 + O2",
+                label = "Escribe tu fórmula aquí (ej. Cu(NO3)2 = CuO + NO2 + O2)",
             )
             Spacer(Modifier.height(20.dp))
 
             AppButton(
-                onClick = { viewModel.onBalanceButtonClicked() },
+                onClick = {
+                    viewModel.onBalanceButtonClicked()
+                    focusManager.clearFocus()
+                },
                 enabled = !uiState.isLoading,
                 text = if (uiState.isLoading) "Balanceando..." else "Balancear",
                 width = 150.dp
             )
             Spacer(Modifier.height(20.dp))
 
-
+            Box(
+                Modifier
+                    .fillMaxWidth(0.7f)
+                    .border(
+                        1.dp, MainBlue,
+                        MaterialTheme.shapes.small
+                    )
+                    .background(
+                        LightBlue,
+                        MaterialTheme.shapes.small
+                    )
+                    .padding(16.dp)
+            ){
+                when {
+                    uiState.balancedEquation != null -> {
+                        uiState.balancedEquation?.let { (equation, coefficients) ->
+                        val annotatedEquation = equation.toAnnotatedString(coefficients)
+                            Text(
+                                text = annotatedEquation,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                    uiState.syntaxErrorRange != null && uiState.errorMessage != null -> {
+                        SyntaxHighlightedFormula(
+                            formula = uiState.formulaInput,
+                            errorRange = uiState.syntaxErrorRange!!,
+                            errorMessage = uiState.errorMessage!!
+                        )
+                    }
+                    uiState.errorMessage != null -> {
+                        uiState.errorMessage?.let { message ->
+                            Text(text = message, color = MaterialTheme.colorScheme.error)
+                        }
+                        Spacer(Modifier.height(16.dp))
+                    }
+                    uiState.isLoading -> {
+                        Text(
+                            text = "Calculando...",
+                            style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                        )
+                    }
+                    else -> {
+                        Text(
+                            text = "Introduce una fórmula para balancear",
+                            color = MainBlue.copy(alpha = 0.6f),
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.proyectoPdm.seashellinc.presentation.ui.screens.ChemicalEquationBalancer.EquationBalancerScreen
+import com.proyectoPdm.seashellinc.presentation.ui.screens.chemicalEquationBalancer.EquationBalancerScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.ChemicalUnitsScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.compounds.CompoundScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.LoadingScreen

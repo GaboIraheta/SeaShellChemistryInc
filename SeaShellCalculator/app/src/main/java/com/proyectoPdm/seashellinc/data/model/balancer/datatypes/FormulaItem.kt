@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
+package com.proyectoPdm.seashellinc.data.model.balancer.datatypes
 
 import androidx.compose.ui.text.AnnotatedString
 

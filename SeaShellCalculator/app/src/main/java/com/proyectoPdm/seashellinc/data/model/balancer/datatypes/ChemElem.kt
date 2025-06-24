@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
+package com.proyectoPdm.seashellinc.data.model.balancer.datatypes
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -8,7 +8,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 
 data class ChemElem (val name: String, val count: Int): FormulaItem {
-    init { require (count >= 1) {"Assertion Error: Count must be a positive integer"} }
+    init { require (count >= 1) {"Error de aseveración: Count debe ser un número positivo"} }
 
     override fun getElements(resultSet: MutableSet<String>) {
         resultSet.add(this.name)

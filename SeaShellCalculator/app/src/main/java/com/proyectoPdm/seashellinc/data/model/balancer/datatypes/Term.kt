@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes
+package com.proyectoPdm.seashellinc.data.model.balancer.datatypes
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -14,7 +14,7 @@ data class Term(
     val charge: Int
 ) : FormulaItem {
     init {
-        if (items.isEmpty() && charge != -1) throw IllegalArgumentException("Invalid term")
+        if (items.isEmpty() && charge != -1) throw IllegalArgumentException("Término inválido")
     }
 
     override fun getElements(resultSet: MutableSet<String>) {

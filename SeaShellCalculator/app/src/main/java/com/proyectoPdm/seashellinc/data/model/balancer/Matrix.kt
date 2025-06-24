@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer
+package com.proyectoPdm.seashellinc.data.model.balancer
 
 import com.proyectoPdm.seashellinc.utils.checkedAddSum
 import com.proyectoPdm.seashellinc.utils.checkedMultiply
@@ -9,7 +9,7 @@ class Matrix(val numRows: Int, val numCols: Int) {
     private var cells: Array<IntArray>
 
     init {
-        if (numRows < 0 || numCols < 0) throw IllegalArgumentException("Illegal argument")
+        if (numRows < 0 || numCols < 0) throw IllegalArgumentException("Argumento ilegal")
         this.cells = Array(numRows) {
             IntArray(numCols) // { 0 }
         }
@@ -18,7 +18,7 @@ class Matrix(val numRows: Int, val numCols: Int) {
     // Returns the value of the given cell in the matrix, where r is the row and c is the column.
     fun get (r: Int, c: Int): Int {
         if (r < 0 || r >= this.numRows || c < 0 || c >= this.numCols) {
-            throw IllegalArgumentException("Index out of bounds")
+            throw IllegalArgumentException("Índice fuera de rango")
         }
         return this.cells[r][c]
     }
@@ -26,14 +26,14 @@ class Matrix(val numRows: Int, val numCols: Int) {
     // Sets the given cell in the matrix to the given value, where r is the row and c is the column.
     fun set (r: Int, c: Int, value: Int) {
         if (r < 0 || r >= this.numRows || c < 0 || c >= this.numCols) {
-            throw IllegalArgumentException("Index out of bounds")
+            throw IllegalArgumentException("Índice fuera de rango")
         }
         this.cells[r][c] = value
     }
 
     private fun swapRows(i: Int, j: Int) {
         if (i < 0 || i >= this.numRows || j < 0 || j >= this.numRows) {
-            throw IllegalArgumentException("Index out of bounds")
+            throw IllegalArgumentException("Índice fuera de rango")
         }
         val temp: IntArray = this.cells[i]
         this.cells[i] = this.cells[j]

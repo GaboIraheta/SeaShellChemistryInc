@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 // import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
-import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
+import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
+import com.proyectoPdm.seashellinc.data.model.calculators.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField

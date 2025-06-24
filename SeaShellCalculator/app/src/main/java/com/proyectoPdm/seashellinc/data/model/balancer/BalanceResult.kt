@@ -1,6 +1,6 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer
+package com.proyectoPdm.seashellinc.data.model.balancer
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Equation
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.Equation
 
 sealed interface BalanceResult {
     data class Success(

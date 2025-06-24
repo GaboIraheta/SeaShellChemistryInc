@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model
+package com.proyectoPdm.seashellinc.data.model.calculators
 
 enum class ToCalculate(val label: String) {
     SOLUTE(label = "Soluto"),

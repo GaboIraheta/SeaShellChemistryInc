@@ -1,7 +1,7 @@
 package com.proyectoPdm.seashellinc.utils
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.Matrix
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Equation
+import com.proyectoPdm.seashellinc.data.model.balancer.Matrix
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.Equation
 
 fun buildMatrix(eqn: Equation): Matrix {
     var elems = eqn.getElements()
@@ -38,7 +38,7 @@ fun solve (matrix: Matrix): Matrix {
         i = j
         if (countNonzeroCoeffs(j) > 1) break
     }
-    if (i == matrix.numRows - 1) throw IllegalStateException("All-zero solutions")
+    if (i == matrix.numRows - 1) throw IllegalStateException("Solución trivial: Coeficientes igual a cero")
 
     matrix.set(matrix.numRows - 1, i, 1)
     matrix.set(matrix.numRows -1, matrix.numCols - 1, 1)
@@ -52,7 +52,7 @@ fun extractCoefficients(matrix: Matrix): IntArray {
     val rows = matrix.numRows
 
     if (cols - 1 > rows || matrix.get(cols - 2, cols - 2) == 0) {
-        throw IllegalStateException("Multiple independent solutions")
+        throw IllegalStateException("Múltiples soluciones independientes")
     }
     var lcm = 1;
     for (i in 0 until cols - 1) {
@@ -66,13 +66,13 @@ fun extractCoefficients(matrix: Matrix): IntArray {
             matrix.get(i, cols - 1)
         )
     )
-    if (coefs.all { x -> x == 0 }) throw IllegalStateException("Assertion error: All-zero solution")
+    if (coefs.all { x -> x == 0 }) throw IllegalStateException("Error de asevarción: Solución trivial: Coeficientes igual a cero")
     return coefs.toIntArray()
 }
 
 fun checkAnswer(eqn: Equation, coefs: IntArray) {
-    if (coefs.size != eqn.leftSide.size + eqn.rightSide.size) throw IllegalStateException("Assertion error: Mismatched length")
-    if (coefs.all { x -> x == 0 }) throw IllegalStateException("Assertion error: All-zero solution")
+    if (coefs.size != eqn.leftSide.size + eqn.rightSide.size) throw IllegalStateException("Error de aseveración: Tamaño disparejo")
+    if (coefs.all { x -> x == 0 }) throw IllegalStateException("Error de asevarción: Solución trivial: Coeficientes igual a cero")
 
     for (elem in eqn.getElements()){
         var sum = 0
@@ -89,6 +89,6 @@ fun checkAnswer(eqn: Equation, coefs: IntArray) {
             ).toInt()
             j++
         }
-        if (sum != 0) throw IllegalStateException("Assertion error: Incorrect balance")
+        if (sum != 0) throw IllegalStateException("Error de aseveración: Balance incorrecto")
     }
 }

@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model.balancer
+package com.proyectoPdm.seashellinc.data.model.balancer
 
 class ParseError(
     message: String,

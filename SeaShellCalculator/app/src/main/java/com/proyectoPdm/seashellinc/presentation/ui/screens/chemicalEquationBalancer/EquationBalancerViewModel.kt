@@ -1,10 +1,10 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.ChemicalEquationBalancer
+package com.proyectoPdm.seashellinc.presentation.ui.screens.chemicalEquationBalancer
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.lifecycle.viewModelScope
-import com.proyectoPdm.seashellinc.data.local.model.balancer.BalanceResult
-import com.proyectoPdm.seashellinc.data.local.model.balancer.Balancer
+import com.proyectoPdm.seashellinc.data.model.balancer.BalanceResult
+import com.proyectoPdm.seashellinc.data.model.balancer.Balancer
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

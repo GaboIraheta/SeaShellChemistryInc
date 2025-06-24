@@ -3,13 +3,13 @@ package com.proyectoPdm.seashellinc.utils
 import kotlin.math.abs
 
 fun checkOverflow(x: Int): Int {
-    if (abs(x) >= Int.MAX_VALUE) throw ArithmeticException("Arithmetic overflow")
+    if (abs(x) >= Int.MAX_VALUE) throw ArithmeticException("Desborde aritmético")
     return x
 }
 
 fun checkedParsedLong(string: String): Int{
     val result = string.toIntOrNull()
-    if (result == null) throw IllegalArgumentException("Not a number")
+    if (result == null) throw IllegalArgumentException("No es un número")
     return checkOverflow(result)
 }
 

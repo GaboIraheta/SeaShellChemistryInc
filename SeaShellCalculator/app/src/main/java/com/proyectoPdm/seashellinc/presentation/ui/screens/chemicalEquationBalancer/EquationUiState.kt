@@ -1,6 +1,6 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.ChemicalEquationBalancer
+package com.proyectoPdm.seashellinc.presentation.ui.screens.chemicalEquationBalancer
 
-import com.proyectoPdm.seashellinc.data.local.model.balancer.datatypes.Equation
+import com.proyectoPdm.seashellinc.data.model.balancer.datatypes.Equation
 
 data class EquationUiState (
     val formulaInput: String = "",
