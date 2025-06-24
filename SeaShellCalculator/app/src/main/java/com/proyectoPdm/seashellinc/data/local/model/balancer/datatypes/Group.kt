@@ -24,15 +24,15 @@ data class Group(
         }
     }
 
-    override fun countElement(name: String): Long {
-        var sum: Long = 0
+    override fun countElement(name: String): Int {
+        var sum = 0
         for (item in this.items) {
-            sum = checkedAddSum(sum, checkedMultiply(item.countElement(name), this.count.toLong()))
+            sum = checkedAddSum(sum, checkedMultiply(item.countElement(name), this.count))
         }
         return sum
     }
 
-    fun toAnnotatedString(): AnnotatedString {
+    override fun toAnnotatedString(): AnnotatedString {
         return buildAnnotatedString {
             append("(")
             for (item in items) {
@@ -46,7 +46,7 @@ data class Group(
             if (count != 1) {
                 withStyle(
                     SpanStyle(
-                        fontSize = 10.sp,
+                        fontSize = 16.sp,
                         baselineShift = BaselineShift.Subscript
                     )
                 ) {
@@ -55,28 +55,4 @@ data class Group(
             }
         }
     }
-
-// toHtml() equivalente para Jetpack Compose:
-// Similar a ChemElem, la lógica de renderizado de AnnotatedString residiría en un Composable.
-//    fun toAnnotatedString(): AnnotatedString {
-//        return buildAnnotatedString {
-//            append("(")
-//            for (item in items) {
-//                append(
-//                    when (item) {
-//                        is ChemElem -> item.toAnnotatedString()
-//                        is Group -> item.toAnnotatedString()
-//                        else -> AnnotatedString("")
-//                    }
-//                )
-//            }
-//            append(")")
-//            if (count != 1) {
-//                withStyle(SpanStyle(baselineShift = BaselineShift.Subscript)) {
-//                    append(count.toString())
-//                }
-//            }
-//        }
-//    }
-
 }

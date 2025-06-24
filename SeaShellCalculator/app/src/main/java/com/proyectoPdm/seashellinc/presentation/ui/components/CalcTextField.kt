@@ -44,7 +44,6 @@ fun CalcTextField(
 ){
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
-    val focusRequester = remember { FocusRequester() }
 
     var textFieldValueState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(text = input))

@@ -24,11 +24,11 @@ data class Term(
         }
     }
 
-    override fun countElement(name: String): Long {
+    override fun countElement(name: String): Int {
         return if (name == "e") {
-            return -this.charge.toLong()
+            return -this.charge
         } else {
-            var sum = 0L
+            var sum = 0
             for (item in this.items) {
                 sum = checkedAddSum(sum, item.countElement(name))
             }
@@ -36,12 +36,12 @@ data class Term(
         }
     }
 
-    fun toAnnotatedString(): AnnotatedString {
+    override fun toAnnotatedString(): AnnotatedString {
         return buildAnnotatedString {
             if (items.isEmpty() && charge == -1) {
                 append("e")
                 withStyle(SpanStyle(
-                    fontSize = 10.sp,
+                    fontSize = 16.sp,
                     baselineShift = BaselineShift.Superscript
                 )){ append("-") }
             }
@@ -58,28 +58,11 @@ data class Term(
                     var s = if (abs(charge) == 1) "" else abs(charge).toString()
                     s += if (charge > 0) "+" else "-"
                     withStyle(SpanStyle(
-                        fontSize = 10.sp,
+                        fontSize = 16.sp,
                         baselineShift = BaselineShift.Superscript
                     )) { append(s) }
                 }
             }
         }
     }
-
-// toHtml() equivalente para Jetpack Compose:
-// Similar a ChemElem y Group, la lógica de renderizado de AnnotatedString residiría en un Composable.
-//    fun toAnnotatedString(): AnnotatedString {
-//        return buildAnnotatedString {
-//            for (item in items) {
-//                append(
-//                    when (item) {
-//                        is ChemElem -> item.toAnnotatedString()
-//                        is Group -> item.toAnnotatedString()
-//                        else -> AnnotatedString("")
-//                    }
-//                )
-//            }
-//        }
-//    }
-
 }

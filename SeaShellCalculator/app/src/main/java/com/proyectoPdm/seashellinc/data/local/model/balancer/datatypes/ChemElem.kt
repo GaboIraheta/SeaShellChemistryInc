@@ -14,16 +14,16 @@ data class ChemElem (val name: String, val count: Int): FormulaItem {
         resultSet.add(this.name)
     }
 
-    override fun countElement(n: String): Long {
-        return if (n == this.name) this.count.toLong() else 0
+    override fun countElement(n: String): Int {
+        return if (n == this.name) this.count else 0
     }
 
-    fun toAnnotatedString(): AnnotatedString {
+    override fun toAnnotatedString(): AnnotatedString {
         return buildAnnotatedString {
             append(name)
             if (count != 1) {
                 withStyle(SpanStyle(
-                    fontSize = 10.sp,
+                    fontSize = 16.sp,
                     baselineShift = BaselineShift.Subscript
                 )) {
                     append(count.toString())
@@ -31,21 +31,4 @@ data class ChemElem (val name: String, val count: Int): FormulaItem {
             }
         }
     }
-
-// toHtml() equivalent for Jetpack Compose:
-// Instead of returning an HTML DOM element, in Compose you would
-// typically build an AnnotatedString for rich text display (subscripts).
-// This logic would likely reside in a Composable function that takes ChemElem as input.
-//
-//    fun toAnnotatedString(): AnnotatedString {
-//        return buildAnnotatedString {
-//            append(name)
-//            if (count != 1) {
-//                withStyle(SpanStyle(baselineShift = BaselineShift.Subscript)) {
-//                    append(count.toString())
-//                }
-//            }
-//        }
-//    }
-
 }

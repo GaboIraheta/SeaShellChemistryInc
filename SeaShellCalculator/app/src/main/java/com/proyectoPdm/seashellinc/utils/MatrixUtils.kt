@@ -56,18 +56,15 @@ fun extractCoefficients(matrix: Matrix): IntArray {
     }
     var lcm = 1;
     for (i in 0 until cols - 1) {
-        lcm = checkedMultiply(
-            lcm.toLong(),
-            (matrix.get(i, i).toLong() / gcd(lcm.toLong(), matrix.get(i, i).toLong())).toLong()
-        ).toInt()
+        lcm = checkedMultiply(lcm, (matrix.get(i, i) / gcd(lcm, matrix.get(i, i))))
     }
 
     var coefs = mutableListOf<Int>()
     for (i in 0 until cols - 1) coefs.add(
         checkedMultiply(
-            (lcm / matrix.get(i, i)).toLong(),
-            matrix.get(i, cols - 1).toLong()
-        ).toInt()
+            (lcm / matrix.get(i, i)),
+            matrix.get(i, cols - 1)
+        )
     )
     if (coefs.all { x -> x == 0 }) throw IllegalStateException("Assertion error: All-zero solution")
     return coefs.toIntArray()
@@ -81,20 +78,14 @@ fun checkAnswer(eqn: Equation, coefs: IntArray) {
         var sum = 0
         var j = 0
         for (term in eqn.leftSide){
-            sum = checkedAddSum(sum.toLong(),
-                checkedMultiply(
-                    term.countElement(elem).toLong(),
-                    coefs[j].toLong()
-                )
+            sum = checkedAddSum(sum,
+                checkedMultiply(term.countElement(elem), coefs[j])
             ).toInt()
             j++
         }
         for (term in eqn.rightSide) {
-            sum = checkedAddSum(sum.toLong(),
-                checkedMultiply(
-                    term.countElement(elem).toLong(),
-                    -coefs[j].toLong()
-                )
+            sum = checkedAddSum(sum,
+                checkedMultiply(term.countElement(elem), -coefs[j])
             ).toInt()
             j++
         }

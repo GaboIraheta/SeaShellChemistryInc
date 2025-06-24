@@ -2,30 +2,30 @@ package com.proyectoPdm.seashellinc.utils
 
 import kotlin.math.abs
 
-fun checkOverflow(x: Long): Long {
-    if (abs(x) >= Long.MAX_VALUE) throw ArithmeticException("Arithmetic overflow")
+fun checkOverflow(x: Int): Int {
+    if (abs(x) >= Int.MAX_VALUE) throw ArithmeticException("Arithmetic overflow")
     return x
 }
 
-fun checkedParsedLong(string: String): Long{
-    val result = string.toLongOrNull()
+fun checkedParsedLong(string: String): Int{
+    val result = string.toIntOrNull()
     if (result == null) throw IllegalArgumentException("Not a number")
     return checkOverflow(result)
 }
 
-fun checkedAddSum(x: Long, y: Long): Long {
+fun checkedAddSum(x: Int, y: Int): Int {
     return checkOverflow(x + y)
 }
 
-fun checkedMultiply(x: Long, y: Long): Long {
+fun checkedMultiply(x: Int, y: Int): Int {
     return checkOverflow(x * y)
 }
 
-fun gcd(x: Long, y: Long): Long {
+fun gcd(x: Int, y: Int): Int {
     var a = abs(x)
     var b = abs(y)
 
-    while (b != 0L) {
+    while (b != 0) {
         val c = a % b
         a = b
         b = c

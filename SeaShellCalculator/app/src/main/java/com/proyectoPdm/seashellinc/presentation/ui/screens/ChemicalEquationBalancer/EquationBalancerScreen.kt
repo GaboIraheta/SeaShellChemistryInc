@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,22 +16,42 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
+import com.proyectoPdm.seashellinc.presentation.ui.components.BalancerTextField
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
+import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
 @Composable
-fun EquationBalancerScreen(navController: NavController) {
+fun EquationBalancerScreen(
+    navController: NavController,
+    viewModel: EquationBalancerViewModel = hiltViewModel()
+) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val uiState by viewModel.uiState.collectAsState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Background,
@@ -86,16 +107,73 @@ fun EquationBalancerScreen(navController: NavController) {
             }
         }
 
+        val scrollState = rememberScrollState()
+
         Column (
-            modifier = Modifier.fillMaxSize().padding(bottom = navigationBarHeight),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = navigationBarHeight)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(Modifier.height(20.dp))
-            Row {
+            Spacer(Modifier.height(17.dp))
+            Row (
+                modifier = Modifier.fillMaxWidth()
+            ){
                 Spacer(Modifier.width(50.dp))
                 AppGoBackButton(60.dp){
                     navController.popBackStack()
                 }
             }
+
+            Spacer(Modifier.height(16.dp))
+
+            //Title Screen
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.7f)
+                    .height(IntrinsicSize.Min),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Box(
+                    Modifier
+                        .width(4.dp)
+                        .fillMaxHeight()
+                        .background(DarkBlue)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "BALANCEADOR DE ECUACIONES QUÍMICAS",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 30.sp,
+                    color = CitrineBrown
+                )
+            }
+            Spacer(Modifier.height(50.dp))
+
+            BalancerTextField(
+                value = uiState.formulaInput,
+                onValueChange = { viewModel.onFormulaInputChange(it) },
+                label = "Cu(NO3)2 = CuO + NO2 + O2",
+            )
+            Spacer(Modifier.height(20.dp))
+
+            AppButton(
+                onClick = { viewModel.onBalanceButtonClicked() },
+                enabled = !uiState.isLoading,
+                text = if (uiState.isLoading) "Balanceando..." else "Balancear",
+                width = 150.dp
+            )
+            Spacer(Modifier.height(20.dp))
+
+
         }
     }
+}
+
+@Preview
+@Composable
+fun EquationBalancerScreenPreview(){
+    val navController = rememberNavController()
+    EquationBalancerScreen(navController)
 }

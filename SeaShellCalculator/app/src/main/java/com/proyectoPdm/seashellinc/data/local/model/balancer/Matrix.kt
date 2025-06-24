@@ -11,7 +11,7 @@ class Matrix(val numRows: Int, val numCols: Int) {
     init {
         if (numRows < 0 || numCols < 0) throw IllegalArgumentException("Illegal argument")
         this.cells = Array(numRows) {
-            IntArray(numCols) { 0 }
+            IntArray(numCols) // { 0 }
         }
     }
 
@@ -44,21 +44,19 @@ class Matrix(val numRows: Int, val numCols: Int) {
         fun addRows(x: IntArray, y: IntArray): IntArray {
             var z = mutableListOf<Int>()
             for (i in x.indices){
-                z.add(checkedAddSum(x[i].toLong(), y[i].toLong()).toInt())
+                z.add(checkedAddSum(x[i], y[i]).toInt())
             }
             return z.toIntArray()
         }
 
         fun multiplyRow(x: IntArray, c: Int): IntArray {
-            return x.map { value ->
-                checkedMultiply(value.toLong(), c.toLong()).toInt()
-            }.toIntArray()
+            return x.map { value -> checkedMultiply(value, c) }.toIntArray()
         }
 
         fun gcdRow(x: IntArray): Int {
             var result = 0
             for (value in x){
-                result = gcd(value.toLong(), result.toLong()).toInt()
+                result = gcd(value, result)
             }
             return result
         }
@@ -92,7 +90,7 @@ class Matrix(val numRows: Int, val numCols: Int) {
             numPivots++
 
             for (j in numPivots until this.numRows){
-                val g = gcd(pivot.toLong(), cells[j][i].toLong()).toInt()
+                val g = gcd(pivot, cells[j][i])
                 cells[j] = simplifyRow(
                     addRows(
                         multiplyRow(cells[j], pivot / g),
@@ -109,7 +107,7 @@ class Matrix(val numRows: Int, val numCols: Int) {
             val pivot = cells[i][pivotCol]
 
             for (j in i - 1 downTo 0) {
-                val g = gcd(pivot.toLong(), cells[j][pivotCol].toLong()).toInt()
+                val g = gcd(pivot, cells[j][pivotCol])
                 cells[j] = simplifyRow(
                     addRows(
                         multiplyRow(cells[j], pivot / g),

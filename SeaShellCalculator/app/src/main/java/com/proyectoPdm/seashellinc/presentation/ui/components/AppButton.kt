@@ -23,6 +23,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 fun AppButton(
     text: String,
     width: Dp,
+    enabled: Boolean = true,
     isPremium: Boolean = false,
     onClick: () -> Unit
 ) {
@@ -38,6 +39,7 @@ fun AppButton(
         onClick = {onClick()},
         colors = ButtonDefaults.buttonColors(MainBlue),
         shape = RoundedCornerShape(5.dp),
+        enabled = enabled,
         modifier = modifier
     ) {
         Text(

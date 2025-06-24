@@ -25,7 +25,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Preview
 @Composable
-fun EquationBalancerScreen(
+fun EquationBalancerScreenTEST(
     // viewModel: EquationBalancerViewModel = HiltViewModel()
     viewModel: EquationBalancerViewModel = viewModel()
 ){
