@@ -3,7 +3,6 @@ package com.proyectoPdm.seashellinc.presentation.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +22,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,7 +39,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -53,8 +49,7 @@ import com.proyectoPdm.seashellinc.presentation.navigation.LoginScreenSerializab
 import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.PeriodicTableScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.PhysicalUnitsScreenSerializable
-import com.proyectoPdm.seashellinc.presentation.navigation.RegisterScreenSerializable
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.LogoComponent
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Buff
@@ -161,25 +156,27 @@ fun MainScreen(navController: NavController) {
                 style = TextStyle(fontSize = 20.sp)
             )
             Spacer(Modifier.height(60.dp))
-            AppButton("Unidades físicas\nde concentración", 240.dp) {
-                navController.navigate(PhysicalUnitsScreenSerializable)
-            }
+            AppButton("Unidades físicas\nde concentración", 240.dp, onClick = {
+                navController.navigate(
+                    PhysicalUnitsScreenSerializable
+                )
+            })
             Spacer(Modifier.height(20.dp))
-            AppButton("Unidades químicas\nde concentración", 240.dp) {
+            AppButton("Unidades químicas\nde concentración", 240.dp, onClick =  {
                 navController.navigate(ChemicalUnitsScreenSerializable)
-            }
+            })
             Spacer(Modifier.height(20.dp))
-            AppButton("Lista de masas\nmolares", 240.dp) {
+            AppButton("Lista de masas\nmolares", 240.dp, onClick =  {
                 navController.navigate(MolarMassScreenSerializable)
-            }
+            })
             Spacer(Modifier.height(20.dp))
-            AppButton("Balanceador de\necuaciones químicas", 240.dp, true) {
+            AppButton("Balanceador de\necuaciones químicas", 240.dp, isPremium = true, onClick =  {
                 /*if (user.IsPremium) */navController.navigate(BalEquationScreenSerializable) /*else navController.navigate(BuyPremiumScreenSerializable)*/
-            }
+            })
             Spacer(Modifier.height(20.dp))
-            AppButton("Tabla Periódica", 240.dp, true) {
+            AppButton("Tabla Periódica", 240.dp, isPremium = true, onClick =  {
                 /*if (user.IsPremium) */ navController.navigate(PeriodicTableScreenSerializable) /*else navController.navigate(BuyPremiumScreenSerializable)*/
-            }
+            })
             Spacer(Modifier.height(50.dp))
 
             //if(userIsLogged){ //TODO: implementar lógica de inicio de sesión

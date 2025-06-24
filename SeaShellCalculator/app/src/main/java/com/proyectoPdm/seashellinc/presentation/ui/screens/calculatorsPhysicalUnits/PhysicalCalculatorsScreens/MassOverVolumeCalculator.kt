@@ -40,7 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
 import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
-import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.SelectionMenu

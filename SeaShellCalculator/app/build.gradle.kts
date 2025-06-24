@@ -45,6 +45,7 @@ android {
 dependencies {
     //Room
     implementation ("androidx.room:room-runtime:2.6.1")
+    implementation(libs.play.services.ads)
     implementation(libs.androidx.foundation)
     ksp(libs.androidx.room.compiler)
 //    annotationProcessor ("androidx.room:room-compiler:2.7.2")
