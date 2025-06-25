@@ -15,19 +15,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,11 +46,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.proyectoPdm.seashellinc.presentation.navigation.CompoundScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassPersonalScreenSerializable
+import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppTextField
 import com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses.MolarMassPersonalViewModel
 import com.proyectoPdm.seashellinc.presentation.ui.theme.Background
+import com.proyectoPdm.seashellinc.presentation.ui.theme.Buff
 import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
+import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MontserratFontFamily
 
@@ -56,6 +69,7 @@ fun MolarMassPersonalScreen(
     val errorMessage by viewModel.errorMessage.collectAsState()
     val query by viewModel.query.collectAsState()
     val filteredList by viewModel.filteredList.collectAsState()
+    val showDialog by viewModel.showDialog.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -81,6 +95,20 @@ fun MolarMassPersonalScreen(
                         .height(8.dp)
                 )
                 Spacer(Modifier.height(30.dp))
+            }
+        },
+        floatingActionButton = {
+            IconButton(
+                onClick = viewModel::changeShowDialog,
+                modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
+                colors = IconButtonDefaults.iconButtonColors(CitrineBrown)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "Ayuda",
+                    tint = Buff,
+                    modifier = Modifier.size(30.dp)
+                )
             }
         }
     ) { paddingValues ->
@@ -188,6 +216,58 @@ fun MolarMassPersonalScreen(
                 }
             }
         }
+        if (showDialog){
+            AlertDialog(
+                containerColor = Background,
+                onDismissRequest = viewModel::changeShowDialog,
+                confirmButton = {
+                    TextButton(onClick = {
+                        /*Agregar compuesto()*/ //TODO: Lógica de agregar compuesto
+                        viewModel.changeShowDialog()
+                    }) {
+                        Text(
+                            "Agregar",
+                            fontFamily = MontserratFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            color = DarkBlue
+                        )
+                    }
+                },
+                title = {Text("Agregar nuevo compuesto")},
+                dismissButton = {
+                    TextButton(onClick = viewModel::changeShowDialog) {
+                        Text(
+                            "Cerrar",
+                            fontFamily = MontserratFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            color = DarkBlue
+                        )
+                    }
+                },
+                text = {
+                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                        AppTextField(
+                            value = "",
+                            onValueChange = {},
+                            label = "Nombre del compuesto"
+                        )
+                        Spacer(Modifier.height(15.dp))
+                        AppTextField(
+                            value = "",
+                            onValueChange = {},
+                            label = "Fórmula (opcional)"
+                        )
+                        Spacer(Modifier.height(15.dp))
+                        AppTextField(
+                            value = "",
+                            onValueChange = {},
+                            label = "Masa molar"
+                        )
 
+                    }
+                }
+            )
+
+        }
     }
 }
