@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -38,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -195,6 +197,7 @@ fun MolarMassPersonalScreen(
 
                         ) {
                             items(filteredList) { item ->
+                                Spacer(Modifier.height(10.dp))
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -204,12 +207,26 @@ fun MolarMassPersonalScreen(
                                             )
                                         }
                                 ) {
-                                    Text(
-                                        item.compoundName,
-                                        fontFamily = MontserratFontFamily,
-                                        fontSize = 10.sp
-                                    )
+                                    Row (modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween) {
+                                        Text(
+                                            item.compoundName,
+                                            fontFamily = MontserratFontFamily,
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        TextButton(onClick = {/*borrarCompuesto()*/}) {
+                                            Text(
+                                                "Borrar",
+                                                fontFamily = MontserratFontFamily,
+                                                fontWeight = FontWeight.Bold,
+                                                color = DarkBlue
+                                            )
+                                        }
+                                    }
                                 }
+                                Spacer(Modifier.height(10.dp))
+                                HorizontalDivider(color = MainBlue)
                             }
                         }
                     }
