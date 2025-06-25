@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.proyectoPdm.seashellinc.R
 import com.proyectoPdm.seashellinc.presentation.navigation.RegisterScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
@@ -223,4 +224,11 @@ fun LoginScreen(navController: NavController) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview(){
+    val navController = rememberNavController()
+    LoginScreen(navController)
 }

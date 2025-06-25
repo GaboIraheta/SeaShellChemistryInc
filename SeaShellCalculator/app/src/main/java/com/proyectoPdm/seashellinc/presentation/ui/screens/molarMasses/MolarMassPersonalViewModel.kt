@@ -1,6 +1,5 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyectoPdm.seashellinc.data.database.CompoundDatabase

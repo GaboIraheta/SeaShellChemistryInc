@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens
+package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.physicalCalculatorsScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,15 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
-import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
+import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
+import com.proyectoPdm.seashellinc.data.model.calculators.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
 import com.proyectoPdm.seashellinc.presentation.ui.components.SelectionMenu
@@ -51,11 +49,10 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-
 @Composable
 fun PartsPerMillionCalculator(
     navController: NavController,
-    viewModel: PhysicalCalculatorViewModel = viewModel()
+    viewModel: PhysicalCalculatorViewModel = hiltViewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 

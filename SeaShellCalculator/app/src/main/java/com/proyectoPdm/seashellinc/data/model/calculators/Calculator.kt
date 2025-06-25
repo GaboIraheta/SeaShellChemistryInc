@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.data.local.model
+package com.proyectoPdm.seashellinc.data.model.calculators
 
 import java.math.BigDecimal
 import java.math.RoundingMode
