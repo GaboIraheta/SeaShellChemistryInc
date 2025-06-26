@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun AppButton(
     text: String,
     width: Dp,
+    enabled: Boolean = true,
     isPremium: Boolean = false,
     onClick: () -> Unit,
     viewModel: AppButtonViewModel = hiltViewModel()
@@ -60,6 +61,7 @@ fun AppButton(
         },
         colors = ButtonDefaults.buttonColors(MainBlue),
         shape = RoundedCornerShape(5.dp),
+        enabled = enabled,
         modifier = modifier
     ) {
         Text(

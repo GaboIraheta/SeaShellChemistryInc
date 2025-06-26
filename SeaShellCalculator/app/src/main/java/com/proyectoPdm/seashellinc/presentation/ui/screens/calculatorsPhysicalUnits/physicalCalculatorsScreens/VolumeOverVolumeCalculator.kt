@@ -1,4 +1,4 @@
-package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens
+package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.physicalCalculatorsScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,14 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
+import com.proyectoPdm.seashellinc.data.model.calculators.ToCalculate
 import androidx.navigation.NavController
-import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
-import com.proyectoPdm.seashellinc.data.local.model.ToCalculate
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppButton.AppButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.AppGoBackButton
 import com.proyectoPdm.seashellinc.presentation.ui.components.CalcTextField
@@ -51,11 +49,10 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 
-
 @Composable
-fun MassOverVolumeCalculator(
+fun VolumeOverVolumeCalculator(
     navController: NavController,
-    viewModel: PhysicalCalculatorViewModel = viewModel()
+    viewModel: PhysicalCalculatorViewModel = hiltViewModel()
 ) {
     val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
@@ -68,9 +65,9 @@ fun MassOverVolumeCalculator(
     
     LaunchedEffect(solute, solvent, concentration, selectedOutput) {
         when (selectedOutput) {
-            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMV()
-            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMV()
-            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMV()
+            ToCalculate.SOLUTE -> viewModel.calculateRequiredSoluteMMVV()
+            ToCalculate.SOLVENT -> viewModel.calculateRequiredSolventMMVV()
+            ToCalculate.CONCENTRATION -> viewModel.calculateConcentrationPercentageMMVV()
         }
     }
     Scaffold(
@@ -129,8 +126,8 @@ fun MassOverVolumeCalculator(
             ){
                 Spacer(Modifier.width(50.dp))
                 AppGoBackButton(60.dp){
-                    navController.popBackStack()
                     viewModel.clearAllInputs()
+                    navController.popBackStack()
                 }
             }
 
@@ -151,7 +148,7 @@ fun MassOverVolumeCalculator(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "PORCENTAJE REFERIDO A LA MASA SOBRE EL VOLUMEN",
+                    text = "PORCENTAJE REFERIDO AL VOLUMEN",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 30.sp,
                     color = CitrineBrown
@@ -197,7 +194,7 @@ fun MassOverVolumeCalculator(
                     }
                 } else solute,
                 onValueChange = { viewModel.onSoluteChange(it) },
-                label = "Soluto (g)",
+                label = "Soluto (mL)",
                 enable = selectedOutput != ToCalculate.SOLUTE
             )
             Spacer(Modifier.height(20.dp))

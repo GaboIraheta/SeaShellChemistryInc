@@ -1,6 +1,5 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
@@ -39,6 +38,9 @@ class MolarMassPersonalViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow<String>("")
     val errorMessage = _errorMessage.asStateFlow()
 
+    private val _showDialog = MutableStateFlow<Boolean>(false)
+    val showDialog = _showDialog.asStateFlow()
+
     val filteredList : StateFlow<List<Compound>> = combine(query, _compoundList) { text, list ->
         if (text.isBlank()) list
         else list.filter { item ->
@@ -48,6 +50,10 @@ class MolarMassPersonalViewModel @Inject constructor(
             ) == true
         }
     }.stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
+
+    fun changeShowDialog() {
+        _showDialog.value = !_showDialog.value
+    }
 
     fun loadData() {
         viewModelScope.launch {
