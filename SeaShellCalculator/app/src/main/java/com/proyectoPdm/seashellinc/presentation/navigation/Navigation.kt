@@ -16,21 +16,14 @@ import com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses.MolarMass
 import com.proyectoPdm.seashellinc.presentation.ui.screens.PeriodicTable.PeriodicTableScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.PhysicalUnitsScreen
 import com.proyectoPdm.seashellinc.presentation.ui.screens.RegisterScreen
-<<<<<<< feature/chemicalCalculators
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsChemicalUnits.molality.MolalityCalculator
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsChemicalUnits.molarFraction.MolarFractionCalculator
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsChemicalUnits.molarity.MolarityCalculator
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsChemicalUnits.normality.NormalityCalculator
-import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.MassOverMassCalculator
-import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.MassOverVolumeCalculator
-import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.PartsPerMillionCalculator
-import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.PhysicalCalculatorsScreens.VolumeOverVolumeCalculator
-=======
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.physicalCalculatorsScreens.MassOverMassCalculator
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.physicalCalculatorsScreens.MassOverVolumeCalculator
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.physicalCalculatorsScreens.PartsPerMillionCalculator
 import com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsPhysicalUnits.physicalCalculatorsScreens.VolumeOverVolumeCalculator
->>>>>>> Develop
 
 @Composable
 fun Navigation() {

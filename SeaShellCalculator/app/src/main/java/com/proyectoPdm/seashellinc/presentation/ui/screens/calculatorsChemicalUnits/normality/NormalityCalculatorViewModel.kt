@@ -1,7 +1,7 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsChemicalUnits.normality
 
 import androidx.lifecycle.ViewModel
-import com.proyectoPdm.seashellinc.data.local.model.CalculationResult
+import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
 import com.proyectoPdm.seashellinc.data.model.ChemicalCalculator
 import com.proyectoPdm.seashellinc.data.model.ChemicalCalculator.ZERO
 import dagger.hilt.android.lifecycle.HiltViewModel
