@@ -103,7 +103,11 @@ class MolarMassPersonalViewModel @Inject constructor(
                 if (connectivityHelper.isNetworkAvailable()){
                     val user = userDao.getLoggedUser()
 
-                    Log.d("MolarMassPersonalViewModel", user.token)
+                    if (user == null || user.token.isEmpty()) {
+                        _errorMessage.value = "Error al obtener la lista de masas molares. Sin embargo, puedes agregar nuevas masas molares."
+                        return@launch
+                    }
+
                     when(val result = userRepository.getMolarMassList(user.token, user.id)){
                         is Result.Success -> {
                             _compoundList.value = result.data

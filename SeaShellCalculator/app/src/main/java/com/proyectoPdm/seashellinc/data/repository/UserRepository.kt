@@ -211,16 +211,15 @@ class UserRepository (
     suspend fun getMolarMassList(token : String, userId : String) : Result<List<CompoundEntity>> {
         return try {
 
+            if (token.isNotEmpty() && userId.isNotEmpty()) {
+                Result.Failure(Exception("Autenticacion no valida."), "Ha ocurrido un error en la obtencion de la lista de masas molares.")
+            }
+
             val response = apiService.getMolarMassList("Bearer $token", userId)
 
             if (response.isSuccessful) {
 
-                //todo aqui hay cambiar la estructura del repository, debe quedar como los demas, unicamente considerando
-                //que lo unico que se hace aqui es obtener, no cambiar nada, por lo cual solo es necesario traer la lista
-                //pero si se puede, con la estructura igual que los demas repos
-
                 val compounds = response.body()?.molarMassList?.map {
-                    Log.d("AddMolarMass", it.toString())
                     it.toMolarMassEntity(userId)
                 }
                     ?: emptyList()

@@ -79,7 +79,7 @@ class CompoundViewModel @Inject constructor(
 
     suspend fun getCompoundForMolarMassPersonal(compoundName : String, dao : UserDao) : Compound? {
         val userLogged = dao.getLoggedUser()
-        val result = repository.getMolarMassList(userLogged.token, userLogged.id)
+        val result = repository.getMolarMassList(userLogged?.token ?: "", userLogged?.id ?: "")
         return if (result is Result.Success) {
             result.data.find {
                 it.compound.compoundName.equals(compoundName, ignoreCase = true)

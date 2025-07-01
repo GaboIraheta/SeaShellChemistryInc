@@ -37,7 +37,7 @@ interface UserDao {
     suspend fun deleteUserById(userId : String)
 
     @Query("SELECT * FROM users LIMIT 1")
-    suspend fun getLoggedUser() : UserEntity
+    suspend fun getLoggedUser() : UserEntity?
 
     @Query("DELETE FROM users")
     suspend fun deleteAllUsers()
