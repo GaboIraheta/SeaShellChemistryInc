@@ -45,7 +45,7 @@ interface CompoundDao {
 //        postId: String
 //    ) NO USADA
 
-//    //permite eliminar un compuesto
+    //    //permite eliminar un compuesto
     @Delete
     suspend fun deleteMolarMass(molarMas : CompoundEntity) //NO USADA
 

@@ -167,7 +167,7 @@ fun BuyPremiumScreen(
             Spacer(Modifier.height(20.dp))
             Row(modifier = Modifier.height(70.dp)) {
                 Spacer(Modifier.width(20.dp))
-                AppGoBackButton(80.dp) {
+                AppGoBackButton(60.dp) {
                     navController.popBackStack()
                 }
             }
@@ -210,7 +210,7 @@ fun BuyPremiumScreen(
                     "\nPago unico",
                     fontFamily = MontserratFontFamily,
                     fontWeight = FontWeight.Bold,
-                    color = DarkBlue,
+                    color = Color.White,
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp
                 )

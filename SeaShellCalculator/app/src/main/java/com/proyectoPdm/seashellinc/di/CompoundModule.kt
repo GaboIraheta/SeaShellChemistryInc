@@ -6,6 +6,9 @@ import com.proyectoPdm.seashellinc.data.database.daos.CompoundDao
 import com.proyectoPdm.seashellinc.data.database.daos.UserDao
 import com.proyectoPdm.seashellinc.data.remote.ApiService
 import com.proyectoPdm.seashellinc.data.repository.UserRepository
+import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
+import com.proyectoPdm.seashellinc.data.remote.CompoundApiService
+import com.proyectoPdm.seashellinc.data.repository.CompoundRepository
 import com.proyectoPdm.seashellinc.utils.ConnectivityHelper
 import dagger.Module
 import dagger.Provides

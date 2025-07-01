@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.proyectoPdm.seashellinc.data.database.SeaShellChemistryDatabase
 import com.proyectoPdm.seashellinc.data.database.daos.UserDao
 import com.proyectoPdm.seashellinc.data.database.entity.CompoundEntity
+import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
 import com.proyectoPdm.seashellinc.data.local.compounds
 import com.proyectoPdm.seashellinc.data.model.Result
 import com.proyectoPdm.seashellinc.data.model.compound.Compound

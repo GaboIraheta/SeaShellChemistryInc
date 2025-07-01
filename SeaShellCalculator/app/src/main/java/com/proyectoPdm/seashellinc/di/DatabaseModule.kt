@@ -3,6 +3,7 @@ package com.proyectoPdm.seashellinc.di
 import android.content.Context
 import androidx.room.Room
 import com.proyectoPdm.seashellinc.data.database.SeaShellChemistryDatabase
+import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
 import com.proyectoPdm.seashellinc.data.database.daos.CompoundDao
 import com.proyectoPdm.seashellinc.data.database.daos.UserDao
 import dagger.Module

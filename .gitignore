@@ -5,7 +5,7 @@
 /SeaShellCalculator/.kotlin
 /SeaShellCalculator/.idea
 /SeaShellCalculator/local.properties
-/SeaShellCalculator/app/build
+/SeaShellCalculator/build
 
 captures
 .externalNativeBuild

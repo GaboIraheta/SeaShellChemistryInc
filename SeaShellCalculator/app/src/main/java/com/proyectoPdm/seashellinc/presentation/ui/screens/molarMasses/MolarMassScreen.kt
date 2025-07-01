@@ -35,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,6 +56,7 @@ import com.proyectoPdm.seashellinc.presentation.navigation.ErrorScreenSerializab
 import com.proyectoPdm.seashellinc.presentation.navigation.MainScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.MolalityCalculatorSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.MolarFractionCalculatorSerializable
+import androidx.compose.ui.text.style.TextAlign
 import com.proyectoPdm.seashellinc.presentation.navigation.MolarMassPersonalScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.MolarityCalculatorSerializable
 import com.proyectoPdm.seashellinc.presentation.navigation.NormalityCalculatorSerializable
