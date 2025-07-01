@@ -1,11 +1,16 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses
 
+
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.proyectoPdm.seashellinc.data.database.SeaShellChemistryDatabase
+import com.proyectoPdm.seashellinc.data.database.daos.UserDao
 import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
 import com.proyectoPdm.seashellinc.data.database.entity.CompoundEntity
 import com.proyectoPdm.seashellinc.data.model.Compound
 import com.proyectoPdm.seashellinc.data.model.Result
+import com.proyectoPdm.seashellinc.data.repository.UserRepository
 import com.proyectoPdm.seashellinc.data.repository.CompoundRepository
 import com.proyectoPdm.seashellinc.utils.ConnectivityHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,11 +28,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MolarMassPersonalViewModel @Inject constructor(
-    private val compoundRepository: CompoundRepository,
+    private val userDao: UserDao,
+    private val userRepository: UserRepository,
     private val connectivityHelper: ConnectivityHelper,
-    private val db : CompoundDatabase
+    private val db : SeaShellChemistryDatabase
 ) : ViewModel() {
-    private val _compoundList = MutableStateFlow<List<Compound>>(emptyList())
+    private val _compoundList = MutableStateFlow<List<CompoundEntity>>(emptyList())
+    val compoundList = _compoundList.asStateFlow()
 
     private val _query = MutableStateFlow<String>("")
     val query = _query.asStateFlow()
@@ -41,15 +48,50 @@ class MolarMassPersonalViewModel @Inject constructor(
     private val _showDialog = MutableStateFlow<Boolean>(false)
     val showDialog = _showDialog.asStateFlow()
 
-    val filteredList : StateFlow<List<Compound>> = combine(query, _compoundList) { text, list ->
+    val filteredList : StateFlow<List<CompoundEntity>> = combine(query, _compoundList) { text, list ->
         if (text.isBlank()) list
         else list.filter { item ->
-            item.compoundName.contains(text, ignoreCase = true) || item.chemicalFormula?.contains(
+            item.compound.compoundName.contains(text, ignoreCase = true) || item.compound.chemicalFormula?.contains(
                 text,
                 ignoreCase = true
             ) == true
         }
     }.stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
+
+    private val _molarMassForMolarityCalculator = MutableStateFlow<String>("")
+    val molarMassForMolarityCalculator = _molarMassForMolarityCalculator.asStateFlow()
+
+    fun setMolarMassForMolarityCalculator(value : String) {
+        _molarMassForMolarityCalculator.value = value
+    }
+
+    private val _molarMassForMolalityCalculator = MutableStateFlow<String>("")
+    val molarMassForMolalityCalculator = _molarMassForMolalityCalculator.asStateFlow()
+
+    fun setMolarMassForMolalityCalculator(value : String) {
+        _molarMassForMolalityCalculator.value = value
+    }
+
+    private val _molarMassForMolarFractionSoluteCalculator = MutableStateFlow<String>("")
+    val molarMassForMolarFractionSoluteCalculator = _molarMassForMolarFractionSoluteCalculator.asStateFlow()
+
+    fun setMolarMassForMolarFractionSoluteCalculator(value : String) {
+        _molarMassForMolarFractionSoluteCalculator.value = value
+    }
+
+    private val _molarMassForMolarFractionSolventCalculator = MutableStateFlow<String>("")
+    val molarMassForMolarFractionSolventCalculator = _molarMassForMolarFractionSolventCalculator.asStateFlow()
+
+    fun setMolarMassForMolarFractionSolventCalculator(value : String) {
+        _molarMassForMolarFractionSolventCalculator.value = value
+    }
+
+    private val _molarMassForNormalityCalculator = MutableStateFlow<String>("")
+    val molarMassForNormalityCalculator = _molarMassForNormalityCalculator.asStateFlow()
+
+    fun setMolarMassForNormalityCalculator(value : String) {
+        _molarMassForNormalityCalculator.value = value
+    }
 
     fun changeShowDialog() {
         _showDialog.value = !_showDialog.value
@@ -62,7 +104,14 @@ class MolarMassPersonalViewModel @Inject constructor(
 
             try {
                 if (connectivityHelper.isNetworkAvailable()){
-                    when(val result = compoundRepository.getCompoundList()){
+                    val user = userDao.getLoggedUser()
+
+                    if (user == null || user.token.isEmpty()) {
+                        _errorMessage.value = "No se pudo obtener la lista de masas molares. Intenta iniciar sesion nuevamente o agregar nuevas masas molares desde lista de masas molares en la pantalla principal."
+                        return@launch
+                    }
+
+                    when(val result = userRepository.getMolarMassList(user.token, user.id)){
                         is Result.Success -> {
                             _compoundList.value = result.data
                         }
@@ -71,7 +120,11 @@ class MolarMassPersonalViewModel @Inject constructor(
                         }
                     }
                     _compoundList.value.map { item ->
-                        db.CompoundDao().addCompound(CompoundEntity(compound = item))
+                        db.CompoundDao().addCompound(CompoundEntity(
+                            compound = item.compound,
+                            id = item.id,
+                            userId = item.userId
+                        ))
                     }
                 } else {
                     try {

@@ -1,9 +1,9 @@
 package com.proyectoPdm.seashellinc.presentation.ui.screens.calculatorsChemicalUnits.molarity
 
 import androidx.lifecycle.ViewModel
-import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
 import com.proyectoPdm.seashellinc.data.model.ChemicalCalculator
 import com.proyectoPdm.seashellinc.data.model.ChemicalCalculator.ZERO
+import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

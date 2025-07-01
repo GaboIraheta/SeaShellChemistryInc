@@ -1,6 +1,6 @@
 package com.proyectoPdm.seashellinc.data.local
 
-import com.proyectoPdm.seashellinc.data.model.Compound
+import com.proyectoPdm.seashellinc.data.model.compound.Compound
 
 val compounds = listOf<Compound>(
     Compound("Agua", "H₂O", 18.015),

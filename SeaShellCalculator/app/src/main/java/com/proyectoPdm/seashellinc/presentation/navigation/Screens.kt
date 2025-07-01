@@ -3,13 +3,13 @@ package com.proyectoPdm.seashellinc.presentation.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object PeriodicTableScreenSerializable
+data class PeriodicTableScreenSerializable(val backOfPremium : Boolean = false)
 
 @Serializable
-object BalEquationScreenSerializable
+data class BalEquationScreenSerializable(val backOfPremium : Boolean = false)
 
 @Serializable
-object BuyPremiumScreenSerializable
+data class BuyPremiumScreenSerializable(val screen : String)
 
 @Serializable
 object ChemicalUnitsScreenSerializable
@@ -27,16 +27,27 @@ object LoginScreenSerializable
 object MainScreenSerializable
 
 @Serializable
-object MolarMassPersonalScreenSerializable
+data class MolarMassPersonalScreenSerializable(
+    val backOfPremium : Boolean = false,
+    val isCalculator : Boolean,
+    val screenToBack : String,
+)
 
 @Serializable
-object MolarMassScreenSerializable
+data class MolarMassScreenSerializable(
+    val backOfPremium : Boolean = false,
+    val isCalculator : Boolean,
+    val screenToBack : String,
+)
 
 @Serializable
 object PhysicalUnitsScreenSerializable
 
 @Serializable
 object RegisterScreenSerializable
+
+@Serializable
+object ErrorScreenSerializable
 
 @Serializable
 object MassOverMassCalculatorSerializable
