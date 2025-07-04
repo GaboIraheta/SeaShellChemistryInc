@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.proyectoPdm.seashellinc.data.model.Info
+import com.proyectoPdm.seashellinc.data.model.user.Info
 import com.proyectoPdm.seashellinc.data.model.calculators.CalculationResult
 import com.proyectoPdm.seashellinc.presentation.navigation.ChemicalUnitsScreenSerializable
 import androidx.navigation.compose.rememberNavController

@@ -25,9 +25,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -141,20 +143,40 @@ fun MolarMassPersonalScreen(
         },
         floatingActionButton = {
             if (!isCalculator) {
-                IconButton(
-                    onClick = viewModel::changeShowDialog,
-                    modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
-                    colors = IconButtonDefaults.iconButtonColors(CitrineBrown)
+
+                Column (
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = "Ayuda",
-                        tint = Buff,
-                        modifier = Modifier.size(30.dp)
-                    )
+
+                    FloatingActionButton(
+                        onClick = viewModel::changeShowDialog,
+                        modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Add,
+                            contentDescription = "Agregar",
+                            tint = Buff,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    FloatingActionButton(
+                        onClick = { viewModel.loadData() },
+                        modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Refresh,
+                            contentDescription = "Refrescar",
+                            tint = Buff,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
                 }
             }
-        }
+        },
+
     ) { paddingValues ->
         Column(
             modifier = Modifier
