@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyectoPdm.seashellinc.data.local.compounds
 import com.proyectoPdm.seashellinc.data.model.compound.Compound
-import com.proyectoPdm.seashellinc.data.model.Element
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

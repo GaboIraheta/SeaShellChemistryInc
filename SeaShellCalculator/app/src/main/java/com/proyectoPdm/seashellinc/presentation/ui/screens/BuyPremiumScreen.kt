@@ -179,7 +179,7 @@ fun BuyPremiumScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             LogoComponent(modifier = Modifier.size(200.dp), 1f)
-            if (isLoading || isPurchaseLoading) {
+            if (isLoading /*|| isPurchaseLoading*/) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -187,14 +187,14 @@ fun BuyPremiumScreen(
                 ) {
                     Column(
                         modifier = Modifier
-                            .background(Background)
+                            .background(Color.Transparent)
                             .padding(30.dp)
                             .fillMaxHeight()
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        CircularProgressIndicator(color = MainBlue)
+                        CircularProgressIndicator(color = Color.White)
                     }
                 }
             } else {
@@ -257,13 +257,13 @@ fun BuyPremiumScreen(
                         }
                     },
                     enabled = !isPurchaseLoading,
-                    colors = ButtonDefaults.buttonColors(Background),
+                    colors = ButtonDefaults.buttonColors(Color.Transparent),
                     shape = RoundedCornerShape(5.dp),
                     modifier = Modifier.border(3.7.dp, Marigold, RoundedCornerShape(5.dp))
                 ) {
                     Text(
                         "Mejorar a Premium!",
-                        color = CitrineBrown,
+                        color = Color.White,
                         fontFamily = MontserratFontFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp

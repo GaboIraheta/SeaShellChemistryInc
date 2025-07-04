@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -85,6 +86,17 @@ fun RegisterScreen(
     val email by userViewModel.email.collectAsState()
     val password by userViewModel.password.collectAsState()
     val accessSuccess by userViewModel.accessSuccess.collectAsState()
+
+    var passwordConfirmValue by remember { mutableStateOf("") }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            userViewModel.setUsername("")
+            userViewModel.setEmail("")
+            userViewModel.setPassword("")
+            passwordConfirmValue = ""
+        }
+    }
 
     LaunchedEffect(accessSuccess) {
         if (accessSuccess) {
@@ -202,8 +214,6 @@ fun RegisterScreen(
                     }
                 }
             } else {
-
-                var passwordConfirmValue by remember { mutableStateOf("") }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

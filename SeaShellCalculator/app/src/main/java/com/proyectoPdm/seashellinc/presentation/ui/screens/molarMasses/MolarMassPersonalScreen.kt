@@ -25,9 +25,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,6 +38,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -106,6 +109,12 @@ fun MolarMassPersonalScreen(
     val successMessage by userViewModel.successMessage.collectAsState()
     val userIsLoading by userViewModel.isLoading.collectAsState()
 
+    DisposableEffect(Unit) {
+        viewModel.loadData()
+
+        onDispose {  }
+    }
+
     LaunchedEffect(successMessage) {
         if (successMessage.isNotEmpty()) {
             Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show()
@@ -141,20 +150,40 @@ fun MolarMassPersonalScreen(
         },
         floatingActionButton = {
             if (!isCalculator) {
-                IconButton(
-                    onClick = viewModel::changeShowDialog,
-                    modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
-                    colors = IconButtonDefaults.iconButtonColors(CitrineBrown)
+
+                Column (
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = "Ayuda",
-                        tint = Buff,
-                        modifier = Modifier.size(30.dp)
-                    )
+
+                    FloatingActionButton(
+                        onClick = viewModel::changeShowDialog,
+                        modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Add,
+                            contentDescription = "Agregar",
+                            tint = Buff,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    FloatingActionButton(
+                        onClick = { viewModel.loadData() },
+                        modifier = Modifier.size(50.dp).shadow(15.dp, RoundedCornerShape(50.dp)),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Refresh,
+                            contentDescription = "Refrescar",
+                            tint = Buff,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
                 }
             }
-        }
+        },
+
     ) { paddingValues ->
         Column(
             modifier = Modifier

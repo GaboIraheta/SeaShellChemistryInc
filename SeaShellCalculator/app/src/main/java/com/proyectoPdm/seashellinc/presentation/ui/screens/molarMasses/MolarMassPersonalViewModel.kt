@@ -8,10 +8,8 @@ import com.proyectoPdm.seashellinc.data.database.SeaShellChemistryDatabase
 import com.proyectoPdm.seashellinc.data.database.daos.UserDao
 import com.proyectoPdm.seashellinc.data.database.CompoundDatabase
 import com.proyectoPdm.seashellinc.data.database.entity.CompoundEntity
-import com.proyectoPdm.seashellinc.data.model.Compound
 import com.proyectoPdm.seashellinc.data.model.Result
 import com.proyectoPdm.seashellinc.data.repository.UserRepository
-import com.proyectoPdm.seashellinc.data.repository.CompoundRepository
 import com.proyectoPdm.seashellinc.utils.ConnectivityHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
@@ -107,7 +105,7 @@ class MolarMassPersonalViewModel @Inject constructor(
                     val user = userDao.getLoggedUser()
 
                     if (user == null || user.token.isEmpty()) {
-                        _errorMessage.value = "No se pudo obtener la lista de masas molares. Intenta iniciar sesion nuevamente o agregar nuevas masas molares desde lista de masas molares en la pantalla principal."
+                        _errorMessage.value = "No se pudo obtener la lista de masas molares. Intenta recargar la pagina."
                         return@launch
                     }
 
@@ -157,6 +155,7 @@ class MolarMassPersonalViewModel @Inject constructor(
     }
 
     init {
+        _compoundList.value = emptyList()
         loadData()
     }
 }

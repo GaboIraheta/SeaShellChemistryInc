@@ -52,7 +52,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.theme.CitrineBrown
 import com.proyectoPdm.seashellinc.presentation.ui.theme.DarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.LightDarkBlue
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
-import com.proyectoPdm.seashellinc.data.model.Info
+import com.proyectoPdm.seashellinc.data.model.user.Info
 import com.proyectoPdm.seashellinc.presentation.navigation.ChemicalUnitsScreenSerializable
 import com.proyectoPdm.seashellinc.presentation.ui.screens.error.ErrorViewModel
 import com.proyectoPdm.seashellinc.presentation.ui.screens.molarMasses.MolarMassPersonalViewModel
