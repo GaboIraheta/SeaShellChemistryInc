@@ -296,7 +296,7 @@ class UserViewModel @Inject constructor (
     fun updatedPremiumStatus(isPremium : Boolean, isReset : Boolean) {
         viewModelScope.launch {
             _isPayPremiumSuccess.value = false
-            _isPayPremiumFailure.value = false
+//            _isPayPremiumFailure.value = false
             _isLoading.value = if (isReset) false else true
             _errorMessage.value = ""
             _successMessage.value = ""
@@ -310,17 +310,17 @@ class UserViewModel @Inject constructor (
                 )) {
 
                     is Result.Success -> {
-                        _isPayPremiumSuccess.value = true
                         _currentUser.value = result.data
                         if (!isReset)
                             _successMessage.value =
                                 result.message ?: "Compra de SeaShellCalculator Premium exitosa."
+                        _isPayPremiumSuccess.value = true
                     }
 
                     is Result.Failure -> {
                         if (!isReset) {
                             _isPayPremiumSuccess.value = false
-                            _isPayPremiumFailure.value = true
+//                            _isPayPremiumFailure.value = true
                             _errorMessage.value =
                                 result.message
                                     ?: "Error en la compra de SeaShellCalculator Premium."
@@ -330,7 +330,7 @@ class UserViewModel @Inject constructor (
             } else {
                 if (!isReset) {
                     _isPayPremiumSuccess.value = false
-                    _isPayPremiumFailure.value = true
+//                    _isPayPremiumFailure.value = true
                     _errorMessage.value =
                         "Conexion a internet requerida para ejecutar la compra de SeaShellCalculator Premium."
                 }
