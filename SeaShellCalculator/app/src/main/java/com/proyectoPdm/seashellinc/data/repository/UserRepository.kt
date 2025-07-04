@@ -310,6 +310,7 @@ class UserRepository (
     suspend fun logoutUser(userId : String) {
         userDao.deleteUserById(userId)
         molarMassDao.deleteAllMolarMassForUser(userId)
+        userDao.deleteAllUsers()
     }
 
     //todo estos dos ultimos metodos realmente no se usaran ya que no habra funcionalidad de actualizar credenciales ni password para el usuario

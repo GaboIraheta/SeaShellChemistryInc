@@ -38,6 +38,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -107,6 +108,12 @@ fun MolarMassPersonalScreen(
     val userErrorMessage by userViewModel.errorMessage.collectAsState()
     val successMessage by userViewModel.successMessage.collectAsState()
     val userIsLoading by userViewModel.isLoading.collectAsState()
+
+    DisposableEffect(Unit) {
+        viewModel.loadData()
+
+        onDispose {  }
+    }
 
     LaunchedEffect(successMessage) {
         if (successMessage.isNotEmpty()) {

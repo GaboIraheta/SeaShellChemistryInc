@@ -155,6 +155,7 @@ class MolarMassPersonalViewModel @Inject constructor(
     }
 
     init {
+        _compoundList.value = emptyList()
         loadData()
     }
 }

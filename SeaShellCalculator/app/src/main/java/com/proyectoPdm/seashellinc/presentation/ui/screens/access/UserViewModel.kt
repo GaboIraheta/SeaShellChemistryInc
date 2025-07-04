@@ -310,6 +310,7 @@ class UserViewModel @Inject constructor (
                 )) {
 
                     is Result.Success -> {
+                        _isPayPremiumSuccess.value = true
                         _currentUser.value = result.data
                         if (!isReset)
                             _successMessage.value =
@@ -318,6 +319,7 @@ class UserViewModel @Inject constructor (
 
                     is Result.Failure -> {
                         if (!isReset) {
+                            _isPayPremiumSuccess.value = false
                             _isPayPremiumFailure.value = true
                             _errorMessage.value =
                                 result.message
@@ -327,6 +329,7 @@ class UserViewModel @Inject constructor (
                 }
             } else {
                 if (!isReset) {
+                    _isPayPremiumSuccess.value = false
                     _isPayPremiumFailure.value = true
                     _errorMessage.value =
                         "Conexion a internet requerida para ejecutar la compra de SeaShellCalculator Premium."
