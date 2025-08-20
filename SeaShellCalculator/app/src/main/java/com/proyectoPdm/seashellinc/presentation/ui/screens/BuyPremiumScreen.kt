@@ -58,6 +58,7 @@ import com.proyectoPdm.seashellinc.presentation.ui.screens.error.ErrorViewModel
 import com.proyectoPdm.seashellinc.presentation.ui.theme.MainBlue
 import android.app.Activity
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.proyectoPdm.seashellinc.billing.PurchaseStatus
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,7 +75,7 @@ fun BuyPremiumScreen(
     val navigationBarHeigh = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val context = LocalContext.current
 
-    val activity = context as? Activity
+//    val activity = context as? Activity
 
     val isLoading by userViewModel.isLoading.collectAsState()
     val errorMessage by userViewModel.errorMessage.collectAsState()
@@ -82,17 +83,44 @@ fun BuyPremiumScreen(
     val currentUser by userViewModel.currentUser.collectAsState()
 
     val isPayPremiumSuccess by userViewModel.isPayPremiumSuccess.collectAsState()
-    val isPayPremiumFailure by userViewModel.isPayPremiumFailure.collectAsState()
+//    val isPayPremiumFailure by userViewModel.isPayPremiumFailure.collectAsState()
 
-    val purchaseStatus by billingViewModel.purchaseStatus.collectAsState()
+//    val purchaseStatus by billingViewModel.purchaseStatus.collectAsState()
 
-    val isPurchaseLoading = purchaseStatus is PurchaseStatus.Loading
+//    val isPurchaseLoading = purchaseStatus is PurchaseStatus.Loading
 
     LaunchedEffect(successMessage) {
-        if (successMessage.isNotEmpty() && isPayPremiumSuccess) {
+        if (successMessage.isNotEmpty() /*&& isPayPremiumSuccess*/) {
             Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show()
         }
         userViewModel.clearSuccessOrErrorMessage()
+    }
+
+    var isLoadingChangeScreen = remember { mutableStateOf(false) }
+
+    LaunchedEffect(isPayPremiumSuccess) {
+        if (currentUser?.user?.isPremium == true) {
+            isLoadingChangeScreen.value = false
+            if (screen == "MolarMassPersonal")
+                navController.navigate(
+                    MolarMassPersonalScreenSerializable(true, false, "Nothing")
+                )
+            else if (screen == "PeriodicTable")
+                navController.navigate(
+                    PeriodicTableScreenSerializable(true)
+                )
+            else if (screen == "BalEquation")
+                navController.navigate(
+                    BalEquationScreenSerializable(true)
+                )
+            else {
+                errorViewModel.setError("Error en la carga de la pantalla de funcionalidad premium, sal y vuelve a entrar.")
+                navController.navigate(ErrorScreenSerializable)
+            }
+        }
+//            errorViewModel.setError("No se pudo confirmar el pago de SeaShellCalculator Premium.")
+//            navController.navigate(ErrorScreenSerializable)
+//        }
     }
 
     LaunchedEffect(errorMessage) {
@@ -102,44 +130,44 @@ fun BuyPremiumScreen(
         }
     }
 
-    LaunchedEffect(purchaseStatus) {
-        when (purchaseStatus) {
-            is PurchaseStatus.Success -> {
-                billingViewModel.resetStatus()
-                userViewModel.setIsPayPremiumSuccess(true)
-                if (currentUser?.user?.isPremium == true) {
-                    if (screen == "MolarMassPersonal")
-                        navController.navigate(
-                            MolarMassPersonalScreenSerializable(true, false, "Nothing")
-                        )
-                    else if (screen == "PeriodicTable")
-                        navController.navigate(
-                            PeriodicTableScreenSerializable(true)
-                        )
-                    else if (screen == "BalEquation")
-                        navController.navigate(
-                            BalEquationScreenSerializable(true)
-                        )
-                    else {
-                        errorViewModel.setError("Error en la carga de la pantalla de funcionalidad premium, sal y vuelve a entrar.")
-                        navController.navigate(ErrorScreenSerializable)
-                    }
-                } else {
-                    errorViewModel.setError("No se pudo confirmar el pago de SeaShellCalculator Premium.")
-                    navController.navigate(ErrorScreenSerializable)
-                }
-            }
-
-            is PurchaseStatus.Error -> {
-                userViewModel.updatedPremiumStatus(false, true)
-                billingViewModel.resetStatus()
-                errorViewModel.setError((purchaseStatus as PurchaseStatus.Error).message)
-                navController.navigate(ErrorScreenSerializable)
-            }
-
-            else -> {}
-        }
-    }
+//    LaunchedEffect(purchaseStatus) {
+//        when (purchaseStatus) {
+//            is PurchaseStatus.Success -> {
+//                billingViewModel.resetStatus()
+//                userViewModel.setIsPayPremiumSuccess(true)
+//                if (currentUser?.user?.isPremium == true) {
+//                    if (screen == "MolarMassPersonal")
+//                        navController.navigate(
+//                            MolarMassPersonalScreenSerializable(true, false, "Nothing")
+//                        )
+//                    else if (screen == "PeriodicTable")
+//                        navController.navigate(
+//                            PeriodicTableScreenSerializable(true)
+//                        )
+//                    else if (screen == "BalEquation")
+//                        navController.navigate(
+//                            BalEquationScreenSerializable(true)
+//                        )
+//                    else {
+//                        errorViewModel.setError("Error en la carga de la pantalla de funcionalidad premium, sal y vuelve a entrar.")
+//                        navController.navigate(ErrorScreenSerializable)
+//                    }
+//                } else {
+//                    errorViewModel.setError("No se pudo confirmar el pago de SeaShellCalculator Premium.")
+//                    navController.navigate(ErrorScreenSerializable)
+//                }
+//            }
+//
+//            is PurchaseStatus.Error -> {
+//                userViewModel.updatedPremiumStatus(false, true)
+//                billingViewModel.resetStatus()
+//                errorViewModel.setError((purchaseStatus as PurchaseStatus.Error).message)
+//                navController.navigate(ErrorScreenSerializable)
+//            }
+//
+//            else -> {}
+//        }
+//    }
 
     val benefitList = listOf(
         "Sin anuncios",
@@ -179,7 +207,7 @@ fun BuyPremiumScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             LogoComponent(modifier = Modifier.size(200.dp), 1f)
-            if (isLoading /*|| isPurchaseLoading*/) {
+            if (isLoading || isLoadingChangeScreen.value /*|| isPurchaseLoading*/) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -246,17 +274,19 @@ fun BuyPremiumScreen(
                 Spacer(Modifier.height(70.dp))
                 Button(
                     onClick = {
-                        if (purchaseStatus is PurchaseStatus.Idle) {
-                            billingViewModel.initBillingManager()
-                            userViewModel.updatedPremiumStatus(true, false)
-                            if (!isPayPremiumFailure) {
-                                activity?.let {
-                                    billingViewModel.launchPurchase(it, "premium")
-                                }
-                            }
-                        }
+                        isLoadingChangeScreen.value = true
+                        userViewModel.updatedPremiumStatus(true, false)
+//                        if (purchaseStatus is PurchaseStatus.Idle) {
+//                            billingViewModel.initBillingManager()
+//                            userViewModel.updatedPremiumStatus(true, false)
+//                            if (!isPayPremiumFailure) {
+//                                activity?.let {
+//                                    billingViewModel.launchPurchase(it, "premium")
+//                                }
+//                            }
+//                        }
                     },
-                    enabled = !isPurchaseLoading,
+//                    enabled = /!isPurchaseLoading/,
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     shape = RoundedCornerShape(5.dp),
                     modifier = Modifier.border(3.7.dp, Marigold, RoundedCornerShape(5.dp))

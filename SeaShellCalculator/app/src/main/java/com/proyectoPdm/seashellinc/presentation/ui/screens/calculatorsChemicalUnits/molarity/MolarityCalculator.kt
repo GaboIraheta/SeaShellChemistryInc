@@ -253,7 +253,6 @@ fun MolarityCalculator(
                 label = "Masa molar (g/mol)",
                 enable = true,
                 info = info
-
             )
             Spacer(Modifier.height(15.dp))
 

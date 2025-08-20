@@ -286,12 +286,12 @@ class UserViewModel @Inject constructor (
     val _isPayPremiumSuccess = MutableStateFlow<Boolean>(false)
     val isPayPremiumSuccess = _isPayPremiumSuccess.asStateFlow()
 
-    fun setIsPayPremiumSuccess(value : Boolean) {
-        _isPayPremiumSuccess.value = value
-    }
-
-    val _isPayPremiumFailure = MutableStateFlow<Boolean>(false)
-    val isPayPremiumFailure = _isPayPremiumFailure.asStateFlow()
+//    fun setIsPayPremiumSuccess(value : Boolean) {
+//        _isPayPremiumSuccess.value = value
+//    }
+//
+//    val _isPayPremiumFailure = MutableStateFlow<Boolean>(false)
+//    val isPayPremiumFailure = _isPayPremiumFailure.asStateFlow()
 
     fun updatedPremiumStatus(isPremium : Boolean, isReset : Boolean) {
         viewModelScope.launch {
